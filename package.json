@@ -3,6 +3,7 @@
   "displayName": "Observable JS Notebook Inspector",
   "description": "Observable JS Notebook Inspector",
   "version": "1.0.0",
+  "icon": "images/notebook.png",
   "publisher": "RandomFractalsInc",
   "author": "Taras Novak a.k.a. dataPixy devTools maker :)",
   "contributors": [
