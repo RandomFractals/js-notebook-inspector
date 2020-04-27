@@ -3,6 +3,29 @@
 	"displayName": "Observable JS Notebook Inspector",
 	"description": "Observable JS Notebook Inspector",
 	"version": "1.0.0",
+	"publisher": "RandomFractalsInc",
+	"author": "Taras Novak a.k.a. dataPixy devTools maker :)",
+	"contributors": [
+		"Taras Novak"
+	],
+	"license": "Apache-2.0",
+	"readme": "README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/RandomFractals/js-notebook-inspector"
+	},
+	"bugs": "https://github.com/RandomFractals/js-notebook-inspector/issues",
+	"homepage": "https://github.com/RandomFractals/js-notebook-inspector/README.md",
+	"keywords": [
+		"observable",
+		"javascript",
+		"notebook",
+		"inspector 🕵️"
+	],
+	"galleryBanner": {
+		"color": "#333",
+		"theme": "dark"
+	},
 	"engines": {
 		"vscode": "^1.44.0"
 	},
