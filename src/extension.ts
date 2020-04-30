@@ -11,6 +11,7 @@ import {
 import * as path from 'path';
 import * as config from './config';
 import {Logger} from './logger';
+import {Template, ITemplateManager, TemplateManager} from './template.manager';
 
 // extension logger
 const logger: Logger = new Logger('geo.data.viewer:', config.logLevel);
@@ -23,6 +24,10 @@ const logger: Logger = new Logger('geo.data.viewer:', config.logLevel);
 export function activate(context: ExtensionContext) {
 	const extensionPath: string = context.extensionPath;
 	logger.info('activate(): activating from extPath:', extensionPath);
+
+	// initialize webview panel templates
+	const templateManager: ITemplateManager = new TemplateManager(context.asAbsolutePath('web'));
+	const notebookViewTemplate: Template | undefined = templateManager.getTemplate('notebook.view.html');
 
 	// add JS Notebook: View Notebook from URL command
 	const notebookUrlCommand: Disposable = commands.registerCommand('js.notebook.url', () => {
