@@ -1,26 +1,41 @@
-"use strict";
+'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-const vscode = require("vscode");
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+const vscode_1 = require("vscode");
+const config = require("./config");
+const logger_1 = require("./logger");
+// extension logger
+const logger = new logger_1.Logger('geo.data.viewer:', config.logLevel);
+/**
+ * Activates this extension per rules set in package.json.
+ * @param context vscode extension context.
+ * @see https://code.visualstudio.com/api/references/activation-events for more info.
+ */
 function activate(context) {
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "notebook-inspector" is now active!');
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('notebook-inspector.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from notebook-inspector!');
+    const extensionPath = context.extensionPath;
+    logger.info('activate(): activating from extPath:', extensionPath);
+    // add JS Notebook: View Notebook from URL command
+    const notebookUrlCommand = vscode_1.commands.registerCommand('js.notebook.url', () => {
+        vscode_1.window.showInputBox({
+            ignoreFocusOut: true,
+            placeHolder: 'https://observablehq.com/@<username>/<notebook>',
+            prompt: 'Observable JS Notebook URL'
+        }).then((notebookUrl) => {
+            if (notebookUrl && notebookUrl !== undefined && notebookUrl.length > 0) {
+                const notebookUri = vscode_1.Uri.parse(notebookUrl);
+                // launch new notebook view
+                vscode_1.commands.executeCommand('js.notebook.view', notebookUri);
+            }
+        });
     });
-    context.subscriptions.push(disposable);
-}
+    context.subscriptions.push(notebookUrlCommand);
+    logger.info('activate(): activated! extPath:', context.extensionPath);
+} // end of activate()
 exports.activate = activate;
-// this method is called when your extension is deactivated
-function deactivate() { }
+/**
+ * Deactivates this vscode extension to free up resources.
+ */
+function deactivate() {
+    // TODO: add extension cleanup code, if needed
+}
 exports.deactivate = deactivate;
 //# sourceMappingURL=extension.js.map

@@ -35,14 +35,21 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:notebook-inspector.helloWorld"
+    "onCommand:js.notebook.url"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "notebook-inspector.helloWorld",
-        "title": "Hello World"
+        "command": "js.notebook.url",
+        "title": "View Notebook from URL",
+        "category": "JS Notebook"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "js.notebook.url",
+        "key": "ctrl+alt+o"
       }
     ]
   },
