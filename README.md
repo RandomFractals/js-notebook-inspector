@@ -14,6 +14,12 @@
 
 ...
 
+# Usage
+
+- Run `JS Notebook: View Notebook from URL` (`ctrl/cmd + alt + o`) command from vscode View -> Command Palette ... to load Observable JS Notebook 📓
+
+...
+
 # Recommended Extensions
 
 Other recommend extensions for working with Interactive data, charts, gists and geo data formats in [VSCode](https://code.visualstudio.com/):
