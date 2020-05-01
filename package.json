@@ -77,6 +77,7 @@
   "dependencies": {
     "@observablehq/inspector": "^3.2.1",
     "@observablehq/parser": "^4.0.1",
-    "@observablehq/runtime": "^4.7.0"
+    "@observablehq/runtime": "^4.7.0",
+    "superagent": "^5.2.2"
   }
 }
