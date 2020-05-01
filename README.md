@@ -7,9 +7,9 @@
 
 # Planned Features
 
-- Interactive Preview of Observable JS Notebook 📓
+- 🕵️ Interactive Preview of Observable JS Notebook 📓
 - Notebook Graph View with links to imported notebook cells
-- Notebooks 📚 Tree View panel with starred notebooks, collections, notebook authors 
+- Notebooks 📚 Tree View panel with starred ⭐ notebooks 📓, collections 🏫, and notebook authors 👨
 - Notebook cell bookmarks 🔖
 
 ...
