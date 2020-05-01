@@ -4,4 +4,12 @@
 
 ![Notebook 📓 Inspector 🕵️](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-inspector.png?raw=true 
  "JS Notebook 📓 Inspector 🕵️")
- 
+
+# Planned Features
+
+- Interactive Preview of Observable JS Notebook 📓
+- Notebook Graph View with links to imported notebook cells
+- Notebooks 📚 Tree View panel with starred notebooks, collections, notebook authors 
+- Notebook cell bookmarks 🔖
+
+...
