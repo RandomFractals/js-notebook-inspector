@@ -35,11 +35,22 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:js.notebook.url"
+    "onCommand:js.notebook.url",
+    "onCommand:js.notebook.view",
+    "onWebviewPanel:js.notebook.view"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "js.notebook.view",
+        "title": "View Notebook",
+        "category": "JS Notebook",
+        "icon": {
+          "light": "./images/notebook.png",
+          "dark": "./images/notebook.png"
+        }
+      },
       {
         "command": "js.notebook.url",
         "title": "View Notebook from URL",
@@ -47,6 +58,10 @@
       }
     ],
     "keybindings": [
+      {
+        "command": "js.notebook.view",
+        "key": "ctrl+alt+i"
+      },
       {
         "command": "js.notebook.url",
         "key": "ctrl+alt+o"
