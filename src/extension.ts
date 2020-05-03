@@ -36,7 +36,7 @@ export function activate(context: ExtensionContext) {
   const notebookViewTemplate: Template | undefined = templateManager.getTemplate('notebook.view.html');
 
   // register map view serializer for restore on vscode restart
-  window.registerWebviewPanelSerializer('notebook.view',
+  window.registerWebviewPanelSerializer('js.notebook.view',
     new NotebookViewSerializer(
       'notebook.view',
       extensionPath,
@@ -70,7 +70,7 @@ export function activate(context: ExtensionContext) {
   });
   context.subscriptions.push(notebookUrlCommand);
 
-  logger.info('activate(): activated! extPath:', context.extensionPath);
+  logger.info('activate(): activated!');
 } // end of activate()
 
 /**
