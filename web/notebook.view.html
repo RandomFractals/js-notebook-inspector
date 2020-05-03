@@ -12,11 +12,267 @@
         connect-src 'self' vscode-resource: https://* wss://*;
         worker-src 'self' vscode-resource: https://* blob: data:">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Map View">
+    <meta name="description" content="JS Notebook View">
     <title>JS Notebook View</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@3/dist/inspector.css">
+    <style>
+      body {
+        background-color: var(--vscode-editor-background);
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+      }
+
+      #message {
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        color: red;
+        font-size: 11pt;
+        text-align: center;
+        padding-top: 0px;
+      }
+
+      #notebook {
+        padding: 0px;
+      }
+
+      #notebook-icon {
+        color: orange;
+        font-weight: bold;
+        font-size: 11pt;
+      }
+      #toolbar {
+        margin: 0px;
+        margin-top: 5px;
+        padding: 0px;
+        padding-left: 7px;
+        font-size: 10pt;
+        font-weight: normal;
+        display: inline-block;
+        white-space: nowrap;
+        height: 25px;
+      }
+      #toolbar-left {
+        width: calc(100% - 120);
+      }
+      #toolbar-right {
+        position: absolute;
+        top: 7px;
+        right: 0px;
+        width: 130px;
+        height: 25px;
+        padding-left: 5px;
+        background-color: var(--vscode-editor-background);
+      }
+      #toolbar a {
+        color: dodgerblue;
+        text-decoration: none;
+        padding: 2px 5px 2px 5px;
+      }
+      #title {
+        margin: 0px;
+        padding: 0px;
+      }
+      #notebook-url-input {
+        width: 200px;
+        color: var(--vscode-editor-foreground);
+        background-color: var(--vscode-editor-background);
+        border: 1px solid #999;
+      }
+      #notebook-viewer {
+        position: absolute;
+        top: 30px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      .hidden {
+        display: none;
+      }
+      .label {
+        color: var(--vscode-editor-foreground);
+      }
+      select {
+        color: var(--vscode-editor-foreground);
+        background-color: var(--vscode-editor-background);
+      }
+    </style>
   </head>
   <body>
+    <div id="toolbar">
+      <div id="toolbar-right">
+        <select id="save-file-type-selector" 
+          title="Save Notebook"
+          onChange="saveData()">
+          <option value="">📥&nbsp;Save</option>
+          <option value=".nb.json" title="Notebook Config">⚙️&nbsp;config</option>
+          <option value=".js" title="Notebook JS">{} &nbsp;js</option>
+          <option value=".html" title="Notebook Html">&lt;&gt;html</option>
+        </select>
+        <a id="help-button" title="Notebook View Help" href="#"
+          style="color: orange;"
+          onClick="showHelp()">?</a>
+        <a id="buy-coffee-button" title="Buy Coffee"  href="#"
+          style="color: orangered; font-weight: bold"
+          onClick="buyCoffee()">☕️</a>
+      </div>
+      <div id="toolbar-left">
+        <a id="title" title="View Notebook Source" href="#" 
+          onClick="viewNotebookSource()">...</a>
+        <!-- |
+        <a title="Undo" href="#" onclick="undoConfig()"> ↩ </a>
+        <a title="Redo" href="#" onclick="redoConfig()"> ↪ </a>
+        -->
+        <!-- TODO: refresh notebook
+        <a id="refresh-notebook-button" title="Refresh Notebook" href="#"
+          style="color: orange;"
+          onclick="reloadNotebook()">🔃</a>
+        -->
+        <input id="notebook-url-input" type="text" 
+          title="Enter new Notebook URL"
+          onKeyPress="loadNotebookViewFromUrl()" />
+      </div>
+    </div>    
+    <div id="message">Loading Map View...</div>
+    <div id="app" width="400" height="400"></div>
+    <div class="map-attributions mapboxgl-ctrl-bottom-right">
+      <div class="mapboxgl-ctrl mapboxgl-ctrl-attrib">
+        <div class="mapboxgl-ctrl-attrib-inner">
+          <a href="https://www.mapbox.com/about/maps/" target="_blank" data-external="true">© Mapbox</a>
+          <a href="http://www.openstreetmap.org/about/" target="_blank" data-external="true">© OpenStreetMap</a>
+        </div>
+      </div>
+    </div>
+    <!-- notebook view init script -->
+    <script type="text/javascript">
+      let vscode, title, message,
+        notebookUrlInput, saveFileTypeSelector,
+        notebookAuthor, notebookFileName, notebookUrl = '{notebookUrl}';
+
+      // initialize vs code api for messaging
+      vscode = acquireVsCodeApi();
+
+      // wire document load state changes
+      document.addEventListener('readystatechange', event => {
+	      switch (document.readyState) {
+		      case 'loading':
+			      console.log(`loading: notebook url: ${notebookUrl}`);
+		      break;
+		      case 'interactive':
+			      // document loading finished, images and stylesheets are still loading ...
+			      console.log('interactive!');
+			      // get initial notebook info: document url, views, etc.
+			      // vscode.postMessage({command: 'getNotebookInfo'});
+			    break;
+		      case "complete":
+			      // web page is fully loaded
+			      console.log('document.readystatechange complete: js.notebook.view:complete!');
+			      break;
+	      }      
+      });
+
+      // wire notebook view refresh on dom content loaded
+      document.addEventListener('DOMContentLoaded', event => {
+        // initialize notebook view page elements
+        title = document.getElementById('title');
+        message = document.getElementById('message');
+        notebookUrlInput = document.getElementById('notebook-url-input');
+        saveFileTypeSelector = document.getElementById('save-file-type-selector');
+        try {
+          // notify webview
+          vscode.postMessage({command: 'refresh'});
+          console.log('loading data ...');
+        } catch (error) {
+          // ignore: must be loaded outside of vscode webview
+        }
+      });
+
+      // notebook info/config/data update handler
+      window.addEventListener('message', event => {
+        switch (event.data.command) {
+          case 'showMessage':
+            showMessage(event.data.message);
+          break;
+          case 'refresh':
+            // clear loading notebook view message
+            showMessage('');
+            console.log('refreshing notebook view ...');
+            vscode.setState({ uri: event.data.uri });
+            title.innerText = event.data.fileName;
+            notebookFileName = event.data.fileName;
+            notebookAuthor = event.data.author;
+            notebookUrl = event.data.url;
+            view(notebookUrl);
+          break;
+        }
+      });
+
+      // notebook view update
+      function view(notebookUrl) {
+        try {
+          // load notebook
+          initializeNotebook(notebookUrl);
+        } catch (error) {
+          console.error(`js.notebook.view:error: ${error}`);
+          showMessage(error.message);
+        }
+      }
+
+      function initializeNotebook(keplerGl, store, config, data, dataType) {
+        console.log(`initializeNotebook: loading ${notebookUrl} ...`);
+      }
+
+      // save notebook config, js, or html
+      function saveNotebook() {
+        // get requested file type
+        const dataFileType = saveFileTypeSelector.value;
+        // TODO
+      }
+
+      // view notebook config source
+      function viewNotebookSource() {
+        vscode.postMessage({
+          command: 'loadView',
+          viewName: 'vscode.open',
+          uri: notebookUrl
+        });
+      }
+
+      // launch notebook view for url
+      function loadNotebookViewFromUrl(e) {
+        if (!e) e = window.event;
+          const keyCode = e.keyCode || e.which;
+          if (keyCode == '13') { // enter key
+          const url = dataUrlInput.value;
+          vscode.postMessage({
+            command: 'loadView',
+            viewName: 'js.notebook.view',
+            uri: url
+          });
+        }
+      }
+
+      // show help page
+      function showHelp() {
+        vscode.postMessage({
+          command: 'loadView',
+          viewName: 'vscode.open',
+          uri: 'https://github.com/RandomFractals/js-notebook-inspector#usage'
+        });
+      }
+
+      // show buy coffee page :)
+      function buyCoffee() {
+        vscode.postMessage({
+          command: 'loadView',
+          viewName: 'vscode.open',
+          uri: 'https://ko-fi.com/dataPixy'
+        });
+      }
+
+      function showMessage(text) {
+        message.innerText = text;
+      }
+    </script>
     <script type="module">
 
       import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
