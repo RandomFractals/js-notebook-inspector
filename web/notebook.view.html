@@ -236,7 +236,7 @@
         if (!e) e = window.event;
           const keyCode = e.keyCode || e.which;
           if (keyCode == '13') { // enter key
-          const url = dataUrlInput.value;
+          const url = notebookUrlInput.value;
           vscode.postMessage({
             command: 'loadView',
             viewName: 'js.notebook.view',
