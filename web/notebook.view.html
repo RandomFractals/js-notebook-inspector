@@ -32,7 +32,9 @@
       }
 
       #notebook {
-        padding: 0px;
+        padding: 10px;
+        background-color: white;
+        overflow-y: auto;
       }
 
       #notebook-icon {
@@ -133,7 +135,7 @@
       </div>
     </div>    
     <div id="message">Loading Notebook View...</div>
-    <div id="app" width="400" height="400"></div>
+    <div id="notebook"></div>
     <!-- notebook view init script -->
     <script type="text/javascript">
       let vscode, title, message,
@@ -273,11 +275,8 @@
       // render notebook
       (function render() {
         const runtime = new Runtime();
-        const main = runtime.module(define, name => {
-          if (name === "notebookUrl") {
-            return new Inspector(document.body);
-          }
-        });
+        const notebookNode = document.getElementById('notebook');
+        const main = runtime.module(define, Inspector.into(notebookNode));
       })();
       </script>
   </body>
