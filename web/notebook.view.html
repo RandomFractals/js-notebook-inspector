@@ -132,16 +132,8 @@
           onKeyPress="loadNotebookViewFromUrl()" />
       </div>
     </div>    
-    <div id="message">Loading Map View...</div>
+    <div id="message">Loading Notebook View...</div>
     <div id="app" width="400" height="400"></div>
-    <div class="map-attributions mapboxgl-ctrl-bottom-right">
-      <div class="mapboxgl-ctrl mapboxgl-ctrl-attrib">
-        <div class="mapboxgl-ctrl-attrib-inner">
-          <a href="https://www.mapbox.com/about/maps/" target="_blank" data-external="true">© Mapbox</a>
-          <a href="http://www.openstreetmap.org/about/" target="_blank" data-external="true">© OpenStreetMap</a>
-        </div>
-      </div>
-    </div>
     <!-- notebook view init script -->
     <script type="text/javascript">
       let vscode, title, message,
@@ -276,15 +268,17 @@
     <script type="module">
 
       import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
-      import define from "https://api.observablehq.com/@tmcw/hello-world.js?v=3";
+      import define from "https://api.observablehq.com/{notebookPath}?v=3";
       
-      const runtime = new Runtime();
-      const main = runtime.module(define, name => {
-        if (name === "hello") {
-          return new Inspector(document.body);
-        }
-      });
-      
+      // render notebook
+      (function render() {
+        const runtime = new Runtime();
+        const main = runtime.module(define, name => {
+          if (name === "notebookUrl") {
+            return new Inspector(document.body);
+          }
+        });
+      })();
       </script>
   </body>
 </html>

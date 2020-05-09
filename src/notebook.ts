@@ -15,4 +15,11 @@ export class Notebook {
     
   }
 
+  /**
+   * Gets notebook path.
+   */
+  public get path(): string {
+    return `${this.authorName}/${this.fileName}.js`;
+  }
+
 }

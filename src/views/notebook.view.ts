@@ -118,7 +118,7 @@ export class NotebookView {
     if (this._url.startsWith('https://observablehq.com/')) {
       // extract notebook name and author info
       const pathTokens: Array<string> = this._uri.path.split('/');
-      const authorName: string = pathTokens[0]; // observable js notebook author name
+      const authorName: string = pathTokens[pathTokens.length - 2]; // observable js notebook author name
       this._fileName = pathTokens[pathTokens.length - 1]; // last in url
       this._isRemoteData = true;
 
@@ -146,16 +146,10 @@ export class NotebookView {
     }
 
     // create html template for the webview
-    const stylesPath: string = Uri.file(path.join(this._extensionPath, 'web/styles'))
-      .with({ scheme: 'vscode-resource' })
-      .toString(true);
-    const scriptsPath: string = Uri.file(path.join(this._extensionPath, 'web/scripts'))
-      .with({ scheme: 'vscode-resource' })
-      .toString(true);
-    if (template) {
+    if (template && this._notebook) {
       this._html = template?.replace({
-        styles: stylesPath,
-        scripts: scriptsPath
+        notebookUrl: this._notebook.url,
+        notebookPath: this._notebook.path
       });
     }
 
