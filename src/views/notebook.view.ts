@@ -17,8 +17,9 @@ import * as path from "path";
 import * as config from "../config";
 import * as fileUtils from "../utils/file.utils";
 import { Logger } from "../logger";
-import { viewManager } from "../view.manager";
+import { Notebook } from "../notebook";
 import { Template } from "../template.manager";
+import { viewManager } from "../view.manager";
 
 /**
  * Notebook webview panel serializer for restoring notebook views on vscode reload.
@@ -81,6 +82,7 @@ export class NotebookView {
   private _html: string = '';
   private _viewUri: Uri;
   private _panel: WebviewPanel;
+  private _notebook: Notebook;
   private _logger: Logger;
 
   /**
@@ -106,21 +108,31 @@ export class NotebookView {
     this._url = uri.toString(true);
     this._fileName = path.basename(uri.fsPath);
     this._fileExtension = path.extname(this._fileName);
+    
     // check for remote data load
     if (this._url.startsWith('http://') || this._url.startsWith('https:')) {
       this._isRemoteData = true;
     }
-    // adjust for observable js notebook url input ...
+
+    // TODO: move this to observable js notebook provider
     if (this._url.startsWith('https://observablehq.com/')) {
-      // init map view uri from kepler.gl demo map config url query string
-      this._url = this._url.replace('https://observablehq.com/', '');
-      this._uri = Uri.parse(this._url);
+      // extract notebook name and author info
       const pathTokens: Array<string> = this._uri.path.split('/');
+      const authorName: string = pathTokens[0]; // observable js notebook author name
       this._fileName = pathTokens[pathTokens.length - 1]; // last in url
       this._isRemoteData = true;
+
+      // create notebook instance for this view
+      this._notebook = new Notebook(this._url, this._fileName, authorName);
+    } else {
+      window.showErrorMessage(`Invalid JS Notebook URL: ${this._url}. \
+        \nOnly Observable JS Notebooks 📚 are supported in this JS Notebook 📓 Inspector 🔎 version.`);
     }
+
+    // create notebook view uri
     this._viewUri = this._uri.with({ scheme: 'js.notebook.view' });
     this._logger = new Logger(`${viewType}:`, config.logLevel);
+    this._logger.info('initializing notebook:', this._url);
 
     // create webview panel title
     switch (viewType) {
