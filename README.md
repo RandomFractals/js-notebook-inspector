@@ -16,13 +16,20 @@
 
 # Usage
 
-- Run `JS Notebook: View Notebook from URL` (`ctrl/cmd + alt + o`) command from vscode View -> Command Palette ... to load Observable JS Notebook 📓
+- Run `JS Notebook: View Notebook from URL` (`ctrl/cmd+alt+o`) command from vscode View -> Command Palette ... to load Observable JS Notebook 📓
 
 ...
 
+# Installation
+
+Install [JS Notebook 📓 Inspector 🕵️](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector) via vscode Extensions tab (`ctrl+shift+x`) by searching for `notebook`...
+
+![Install JS Notebook 📓 Inspector 🕵️](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-inspector-info.png?raw=true 
+ "Install JS Notebook 📓 Inspector 🕵️")
+
 # Recommended Extensions
 
-Other recommend extensions for working with Interactive data, charts, gists and geo data formats in [VSCode](https://code.visualstudio.com/):
+Other recommended extensions for working with Interactive data, charts, gists and geo data formats in [VSCode](https://code.visualstudio.com/):
 
 | Extension | Description |
 | --- | --- |
