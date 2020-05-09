@@ -1,6 +1,15 @@
 # JS Notebook 📓 Inspector 🕵️
 
-[VSCode](https://code.visualstudio.com/) extension for Interactive Preview of [Observable](https://observablehq.com/) JS Notebooks 📚
+[![Build Status](https://travis-ci.org/HoangNguyen17193/vscode-simple-rest-client.svg?branch=master)](https://travis-ci.com/RandomFractals/js-notebook-inspector)
+[![Apache-2.0 License](https://img.shields.io/badge/license-Apache2-orange.svg?color=green)](http://opensource.org/licenses/Apache-2.0)
+<a href='https://ko-fi.com/dataPixy' target='_blank' title='support: https://ko-fi.com/dataPixy'>
+  <img height='24' style='border:0px;height:20px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=2' alt='https://ko-fi.com/dataPixy' /></a>
+
+[![Version](https://vsmarketplacebadge.apphb.com/version/RandomFractalsInc.js-notebook-inspector.svg?color=orange&style=?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector)
+[![Installs](https://vsmarketplacebadge.apphb.com/installs/RandomFractalsInc.js-notebook-inspector.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector)
+[![Downloads](https://vsmarketplacebadge.apphb.com/downloads/RandomFractalsInc.js-notebook-inspector.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector)
+
+[VSCode](https://code.visualstudio.com/) extension for Interactive Preview of [Observable](https://observablehq.com/explore) JS Notebooks 📚
 
 ![Notebook 📓 Inspector 🕵️](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-inspector.png?raw=true 
  "JS Notebook 📓 Inspector 🕵️")
