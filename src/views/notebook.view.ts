@@ -149,7 +149,9 @@ export class NotebookView {
     if (template && this._notebook) {
       this._html = template?.replace({
         notebookUrl: this._notebook.url,
-        notebookPath: this._notebook.path
+        notebookPath: this._notebook.path,
+        notebookName: this._notebook.fileName,
+        notebookAuthor: this._notebook.authorName
       });
     }
 

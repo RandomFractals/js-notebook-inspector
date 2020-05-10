@@ -50,13 +50,13 @@
         background-color: var(--vscode-editor-background);
       }
       #toolbar a {
-        color: dodgerblue;
-        text-decoration: none;
         padding: 2px 5px 2px 5px;
       }
       #title {
         margin: 0px;
         padding: 0px;
+        color: dodgerblue;
+        text-decoration: none;
       }
       #notebook-url-input {
         width: 200px;
@@ -117,9 +117,19 @@
           style="color: orangered; font-weight: bold"
           onClick="buyCoffee()">☕️</a>
       </div>
-      <div id="toolbar-left">
-        <a id="title" title="View Notebook Source" href="#" 
-          onClick="viewNotebookSource()">{notebookPath}</a>
+      <div id="toolbar-left">        
+        <a id="title" title="View Notebook Source" 
+          href="#"
+          onClick="viewNotebookSource('{notebookUrl}')">
+          <span class="label">📓</span>
+          {notebookName}
+        </a>
+        <a id="author-button" title="View {notebookAuthor} Notebooks" 
+        href="#" class="label"
+        onClick="viewNotebookSource('https://observablehq.com/{notebookAuthor}')">👨</a>
+      <a id="collections-button" title="View {notebookAuthor} Notebook Collections" 
+        href="#" class="label"
+        onClick="viewNotebookSource('https://observablehq.com/{notebookAuthor}?tab=collections')">📚</a>        
         <!-- |
         <a title="Undo" href="#" onclick="undoConfig()"> ↩ </a>
         <a title="Redo" href="#" onclick="redoConfig()"> ↪ </a>
@@ -222,8 +232,8 @@
         // TODO
       }
 
-      // view notebook config source
-      function viewNotebookSource() {
+      // view notebook source
+      function viewNotebookSource(notebookUrl) {
         vscode.postMessage({
           command: 'loadView',
           viewName: 'vscode.open',
