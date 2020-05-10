@@ -17,26 +17,12 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@3/dist/inspector.css">
     <style>
       body {
-        background-color: var(--vscode-editor-background);
+        background-color: white;
         color: black;
         margin: 0px;
         padding: 0px;
         overflow: auto;
       }
-
-      #message {
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        color: red;
-        font-size: 11pt;
-        text-align: center;
-        padding-top: 0px;
-      }
-
-      #notebook {
-        padding: 20px;
-        background-color: white;
-      }
-
       #notebook-icon {
         color: orange;
         font-weight: bold;
@@ -44,25 +30,23 @@
       }
       #toolbar {
         margin: 0px;
-        margin-top: 5px;
-        padding: 0px;
-        padding-left: 7px;
+        padding: 5px;
         font-size: 10pt;
         font-weight: normal;
-        display: inline-block;
         white-space: nowrap;
         height: 25px;
+        background-color: var(--vscode-editor-background);
       }
       #toolbar-left {
         width: calc(100% - 120);
       }
       #toolbar-right {
         position: absolute;
-        top: 7px;
+        top: 0px;
         right: 0px;
         width: 48px;
         height: 22px;
-        padding-left: 5px;
+        padding: 5px;
         background-color: var(--vscode-editor-background);
       }
       #toolbar a {
@@ -80,12 +64,26 @@
         background-color: var(--vscode-editor-background);
         border: 1px solid #999;
       }
-      #notebook-viewer {
+      #message {
         position: absolute;
         top: 30px;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background-color: white;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        color: red;
+        font-size: 11pt;
+        text-align: center;
+        padding-top: 0px;
+      }
+      #notebook-view {
+        top: 0;
         bottom: 0;
         left: 0;
         right: 0;
+        padding: 20px;
+        background-color: white;
       }
       .hidden {
         display: none;
@@ -100,7 +98,7 @@
     </style>
   </head>
   <body>
-    <div id="toolbar">
+    <div id="toolbar" width="100%">
       <div id="toolbar-right">
         <!--
         <select id="save-file-type-selector" 
@@ -121,7 +119,7 @@
       </div>
       <div id="toolbar-left">
         <a id="title" title="View Notebook Source" href="#" 
-          onClick="viewNotebookSource()">...</a>
+          onClick="viewNotebookSource()">{notebookPath}</a>
         <!-- |
         <a title="Undo" href="#" onclick="undoConfig()"> ↩ </a>
         <a title="Redo" href="#" onclick="redoConfig()"> ↪ </a>
@@ -137,10 +135,10 @@
       </div>
     </div>    
     <div id="message">Loading Notebook View...</div>
-    <div id="notebook"></div>
+    <div id="notebook-view"></div>
     <!-- notebook view init script -->
     <script type="text/javascript">
-      let vscode, title, message,
+    let vscode, title, message,
         notebookUrlInput, saveFileTypeSelector,
         notebookAuthor, notebookFileName, notebookUrl = '{notebookUrl}';
 
@@ -193,7 +191,7 @@
             showMessage('');
             console.log('refreshing notebook view ...');
             vscode.setState({ uri: event.data.uri });
-            title.innerText = event.data.fileName;
+            //title.innerText = event.data.fileName;
             notebookFileName = event.data.fileName;
             notebookAuthor = event.data.author;
             notebookUrl = event.data.uri;
@@ -268,18 +266,25 @@
       function showMessage(text) {
         message.innerText = text;
       }
+      
     </script>
     <script type="module">
-
       import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
       import define from "https://api.observablehq.com/{notebookPath}?v=3";
-      
-      // render notebook
-      (function render() {
+
+      function renderNotebook() {
         const runtime = new Runtime();
-        const notebookNode = document.getElementById('notebook');
-        const main = runtime.module(define, Inspector.into(notebookNode));
+        const notebookView = document.getElementById('notebook-view');
+        // clear notebook view
+        while (notebookView.firstChild) {
+          notebookView.removeChild(notebookView.firstChild);
+        }
+        const main = runtime.module(define, Inspector.into(notebookView));
+      }
+
+      (function loadNotebook() {
+        renderNotebook();
       })();
-      </script>
+    </script>
   </body>
 </html>
