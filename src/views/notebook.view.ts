@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 import {
   workspace,
   window,
@@ -11,15 +11,16 @@ import {
   WebviewPanelOnDidChangeViewStateEvent,
   WebviewPanelSerializer,
   commands,
-} from "vscode";
-import * as fs from "fs";
-import * as path from "path";
-import * as config from "../config";
-import * as fileUtils from "../utils/file.utils";
-import { Logger } from "../logger";
-import { Notebook } from "../notebook";
-import { Template } from "../template.manager";
-import { viewManager } from "../view.manager";
+} from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as config from '../config';
+import * as fileUtils from '../utils/file.utils';
+import { Logger } from '../logger';
+import { Notebook } from '../notebook';
+import { Template } from '../template.manager';
+import { notebookManager } from '../notebook.manager';
+import { viewManager } from '../view.manager';
 
 /**
  * Notebook webview panel serializer for restoring notebook views on vscode reload.
@@ -132,7 +133,7 @@ export class NotebookView {
     // create notebook view uri
     this._viewUri = this._uri.with({ scheme: 'js.notebook.view' });
     this._logger = new Logger(`${viewType}:`, config.logLevel);
-    this._logger.info('initializing notebook:', this._url);
+    this._logger.debug('initializing notebook:', this._url);
 
     // create webview panel title
     switch (viewType) {
@@ -314,18 +315,20 @@ export class NotebookView {
   }
 
   /**
-   * Reload map view on map data save changes or vscode IDE reload.
+   * Refreshes notebook view on load or vscode IDE reload.
    */
   public async refresh(): Promise<void> {
-    // reveal corresponding map view panel
+    // reveal corresponding notebook view panel
     this._panel.reveal(this._panel.viewColumn, true); // preserve focus
 
     // determine data file encoding
     const dataEncoding: string = 'utf8'; // default
     if (this._url.startsWith('https://') && dataEncoding === 'utf8') {
-      // load remote text data file
-      this._content = String(await fileUtils.readDataFile(this._url, dataEncoding));
-      this.refreshView();
+      // load remote notebook document
+      notebookManager.getNotebook(this._url, {}, // parse options
+        (notebookDocument: any) => {
+          this.refreshView(notebookDocument);
+        });
     } else if (dataEncoding === 'utf8') {
       // open local text document
       workspace.openTextDocument(this.uri).then((document) => {
@@ -335,20 +338,21 @@ export class NotebookView {
       });
     } else {
       // delegate to refresh view for loading binary shapefiles
-      this.refreshView();
+      this.refreshView(this._notebook);
     }
   }
 
   /**
    * Refreshes notebook view.
    */
-  public async refreshView() {
+  public async refreshView(notebook: any) {
     try {
       // update notebook view
       this.webview.postMessage({
         command: 'refresh',
         fileName: this._fileName,
         uri: this._uri.toString(),
+        notebook: notebook
       });
     } catch (error) {
       this._logger.debug('refresh():', error.message);

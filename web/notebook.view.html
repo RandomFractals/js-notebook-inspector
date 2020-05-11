@@ -144,11 +144,11 @@
           onKeyPress="loadNotebookViewFromUrl()" />
       </div>
     </div>    
-    <div id="message">Loading Notebook View...</div>
+    <div id="message"></div>
     <div id="notebook-view"></div>
     <!-- notebook view init script -->
     <script type="text/javascript">
-    let vscode, title, message,
+    let vscode, title, message, notebook,
         notebookUrlInput, saveFileTypeSelector,
         notebookAuthor, notebookFileName, notebookUrl = '{notebookUrl}';
 
@@ -201,10 +201,12 @@
             showMessage('');
             console.log('refreshing notebook view ...');
             vscode.setState({ uri: event.data.uri });
-            //title.innerText = event.data.fileName;
+            // title.innerText = event.data.fileName;
             notebookFileName = event.data.fileName;
             notebookAuthor = event.data.author;
             notebookUrl = event.data.uri;
+            notebook = event.data.notebook;
+            console.log(JSON.stringify(notebook));
             view(notebookUrl);
           break;
         }

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 import {
   workspace,
   window,
@@ -7,17 +7,17 @@ import {
   Disposable,
   Uri,
   ViewColumn,
-} from "vscode";
-import * as path from "path";
-import * as config from "./config";
-import { Logger } from "./logger";
-import { NotebookView, NotebookViewSerializer } from "./views/notebook.view";
+} from 'vscode';
+import * as path from 'path';
+import * as config from './config';
+import { Logger } from './logger';
+import { NotebookView, NotebookViewSerializer } from './views/notebook.view';
 import {
   Template,
   ITemplateManager,
   TemplateManager,
-} from "./template.manager";
-import { viewManager } from "./view.manager";
+} from './template.manager';
+import { viewManager } from './view.manager';
 
 // extension logger
 const logger: Logger = new Logger('js.notebook.inspector:', config.logLevel);
@@ -29,7 +29,7 @@ const logger: Logger = new Logger('js.notebook.inspector:', config.logLevel);
  */
 export function activate(context: ExtensionContext) {
   const extensionPath: string = context.extensionPath;
-  logger.info('activate(): activating from extPath:', extensionPath);
+  logger.debug('activate(): activating from extPath:', extensionPath);
 
   // initialize webview panel templates
   const templateManager: ITemplateManager = new TemplateManager(context.asAbsolutePath('web'));
@@ -70,7 +70,7 @@ export function activate(context: ExtensionContext) {
   });
   context.subscriptions.push(notebookUrlCommand);
 
-  logger.info('activate(): activated!');
+  logger.debug('activate(): activated!');
 } // end of activate()
 
 /**

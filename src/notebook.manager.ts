@@ -124,3 +124,6 @@ export class NotebookManager implements INotebookManager {
     notebookProvider.getNotebook(notebookUrl, parseOptions, loadNotebook);
   }
 }
+
+// export Notebook Manager singleton
+export const notebookManager = NotebookManager.Instance;
