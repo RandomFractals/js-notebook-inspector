@@ -3,6 +3,15 @@
 See [releases](https://github.com/RandomFractals/js-notebook-inspector/releases)
 for the brief versions information and feature details with screen pics for this [JS Notebook 📓 Inspector 🕵️](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector) VSCode extension.
 
+## v1.2.0 [2020-05-11]
+
+- [#12](https://github.com/RandomFractals/js-notebook-inspector/issues/12)
+Add notebook provider interface and observable notebook provider implementation
+- [#13](https://github.com/RandomFractals/js-notebook-inspector/issues/13)
+Add notebook manager
+- [#27](https://github.com/RandomFractals/js-notebook-inspector/issues/27)
+Add save notebook as ES JS module option
+
 ## v1.1.0 [2020-05-10]
 
 - [#19](https://github.com/RandomFractals/js-notebook-inspector/issues/19)

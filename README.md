@@ -14,9 +14,13 @@
 ![Notebook 📓 Inspector 🕵️](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-inspector.png?raw=true 
  "JS Notebook 📓 Inspector 🕵️")
 
-# Planned Features
+# Alpha v. Features
 
 - 🕵️ Interactive Preview of JS Notebook 📓
+-  📥 Save Notebook in [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) format
+
+# Planned Features
+
 - ⎇ Notebook Graph View with links to imported Cells ⌗
 - 📚 Tree View ⚼ panel with starred ⭐ Notebooks 📓, Collections ▒ & Notebook Authors 👨
 - ⌗ Cell Bookmarks 🔖
