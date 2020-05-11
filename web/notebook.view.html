@@ -44,7 +44,7 @@
         position: absolute;
         top: 0px;
         right: 0px;
-        width: 48px;
+        width: 120px;
         height: 22px;
         padding: 5px;
         background-color: var(--vscode-editor-background);
@@ -100,16 +100,18 @@
   <body>
     <div id="toolbar" width="100%">
       <div id="toolbar-right">
-        <!--
         <select id="save-file-type-selector" 
           title="Save Notebook"
           onChange="saveData()">
           <option value="">📥&nbsp;Save</option>
+          <!--
           <option value=".nb.json" title="Notebook Config">⚙️&nbsp;config</option>
+          -->
           <option value=".js" title="Notebook JS">{} &nbsp;js</option>
+          <!--
           <option value=".html" title="Notebook Html">&lt;&gt;html</option>
+          -->
         </select>
-        -->
         <a id="help-button" title="Notebook View Help" href="#"
           style="color: orange;"
           onClick="showHelp()">?</a>
