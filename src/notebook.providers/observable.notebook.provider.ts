@@ -10,8 +10,6 @@ import { INotebookProvider } from '../notebook.manager';
 export class ObservableNotebookProvider implements INotebookProvider {
   public supportedFileTypes: Array<string> = ['.js', '.jsnb'];
 
-  private SITE_URL: string = 'https://observablehq.com';
-  private API_URL: string = 'https://api.observablehq.com';
   private logger: Logger = new Logger('observable.notebook.provider:', config.logLevel);
 
   /**
@@ -33,7 +31,8 @@ export class ObservableNotebookProvider implements INotebookProvider {
     loadNotebook: Function
   ): Promise<void> {
     try {
-      const notebookDocumentUrl: string = notebookUrl.replace(this.SITE_URL, `${this.API_URL}`) + '.js';
+      const notebookDocumentUrl: string = 
+        notebookUrl.replace(config.observableSiteUrl, config.observableApiUrl) + '.js';
       this.logger.debug('getNotebook(): documentUrl:', notebookDocumentUrl);
       fetch(notebookDocumentUrl)
         .then((response: any) => response.text())

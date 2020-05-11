@@ -14,6 +14,7 @@ import {
 } from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import fetch from 'node-fetch';
 import * as config from '../config';
 import * as fileUtils from '../utils/file.utils';
 import { Logger } from '../logger';
@@ -207,13 +208,17 @@ export class NotebookView {
     this.webview.onDidReceiveMessage(
       (message) => {
         switch (message.command) {
-          case "refresh":
+          case 'refresh':
             // loads notebook view
             this.refresh();
             break;
-          case "loadView":
+          case 'loadView':
             // launch new view
             this.loadView(message.viewName, message.uri);
+            break;
+          case 'saveNotebook':
+            // save notebook in requested file format
+            this.saveNotebook(message.fileType);
             break;
         }
       },
@@ -359,6 +364,70 @@ export class NotebookView {
       this.webview.postMessage({ error: error });
     }
   } // end of refreshView()
+
+  /**
+   * Saves notebook in requested file formats.
+   * @param fileType Notebook file type to save.
+   */
+  private async saveNotebook(fileType: string): Promise<void> {
+    // create requested notebook file name
+    let notebookFileName: string = `${this._notebook.fileName}${fileType}`;
+
+    // create full notebook file path for saving
+    let notebookFilePath: string = path.dirname(this._uri.fsPath);
+    const workspaceFolders: readonly WorkspaceFolder[] | undefined = workspace.workspaceFolders;
+    if (this._isRemoteData && workspaceFolders && workspaceFolders.length > 0) {
+      // use 'rootPath' workspace folder for saving remote notebook file
+      notebookFilePath = workspaceFolders[0].uri.fsPath;
+    }
+    notebookFilePath = path.join(notebookFilePath, notebookFileName);
+    this._logger.debug('saveNotebook(): saving notebook file:', notebookFilePath);
+
+    // display save file dialog
+    const notebookFileUri: Uri | undefined = await window.showSaveDialog({
+      defaultUri: Uri.parse(notebookFilePath).with({scheme: 'file'})
+    });
+
+    if (notebookFileUri) {
+      // save notebook file
+      switch (fileType) {
+        case '.js':
+          const notebookDocumentUrl: string = 
+            `${config.observableApiUrl}/${this._notebook.authorName}/${this._notebook.fileName}.js`;
+          fetch(notebookDocumentUrl)
+            .then((response: any) => response.text())
+            .then((notebookJS: string) => {
+              this.saveFile(notebookFileUri, notebookJS);
+            });
+          break;
+        case '.html':
+          // TODO
+          window.showInformationMessage('Save notebook html coming soon! :)');
+          break;
+      }
+    }
+  } // end of saveNotebook()
+
+  /**
+   * Saves notebook file to disk and opens it after save.
+   * @param fileUri Notebook file Uri.
+   * @param content Notebook file content.
+   * @param encoding Notebook file encoding.
+   */
+  private saveFile(fileUri: Uri, content: string, encoding: string = 'utf8') {
+      // write notebook file to disk
+      const filePath: string = fileUri.fsPath;
+      fs.writeFile(filePath, content, encoding, (error) => {
+        if (error) {
+          this._logger.error(`saveNotebook(): Error saving '${filePath}'. \n\t Error:`, error.message);
+          window.showErrorMessage(`Unable to save data file: '${filePath}'. \n\t Error: ${error.message}`);
+        }
+        else { // if (this.openSavedFileEditor) {
+          // open saved notebook file
+          this.loadView('vscode.open', fileUri.with({scheme: 'file'}).toString(false)); // skip encoding
+        }
+      });
+  }
 
   /**
    * Logs data stats and optional data schema or metadata for debug.

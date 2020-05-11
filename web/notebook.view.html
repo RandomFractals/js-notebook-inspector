@@ -102,15 +102,13 @@
       <div id="toolbar-right">
         <select id="save-file-type-selector" 
           title="Save Notebook"
-          onChange="saveData()">
+          onChange="saveNotebook()">
           <option value="">📥&nbsp;Save</option>
           <!--
           <option value=".nb.json" title="Notebook Config">⚙️&nbsp;config</option>
           -->
           <option value=".js" title="Notebook JS">{} &nbsp;js</option>
-          <!--
           <option value=".html" title="Notebook Html">&lt;&gt;html</option>
-          -->
         </select>
         <a id="help-button" title="Notebook View Help" href="#"
           style="color: orange;"
@@ -229,13 +227,6 @@
         console.log(`initializeNotebook: loading ${notebookUrl} ...`);
       }
 
-      // save notebook config, js, or html
-      function saveNotebook() {
-        // get requested file type
-        const dataFileType = saveFileTypeSelector.value;
-        // TODO
-      }
-
       // view notebook source
       function viewNotebookSource(notebookUrl) {
         vscode.postMessage({
@@ -257,6 +248,16 @@
             uri: url
           });
         }
+      }
+
+      // save notebook config, js, or html
+      function saveNotebook() {
+        // get requested file type
+        const notebookFileType = saveFileTypeSelector.value;
+        vscode.postMessage({
+          command: 'saveNotebook',
+          fileType: notebookFileType
+        });
       }
 
       // show help page

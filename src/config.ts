@@ -4,3 +4,7 @@ import { LogLevel } from "./logger";
 export const logLevel: LogLevel = LogLevel.Info; // change to .Debug for dev ...
 
 export const supportedDataFiles: RegExp = /.*\.(js|jsnb)/;
+
+// Observable JS site/api base urls
+export const observableSiteUrl: string = 'https://observablehq.com';
+export const observableApiUrl: string = 'https://api.observablehq.com';
