@@ -1,6 +1,6 @@
 import { window } from 'vscode';
 import * as config from '../config';
-import * as fileUtils from '../utils/file.utils';
+import fetch from 'node-fetch';
 import { Logger, LogLevel } from '../logger';
 import { INotebookProvider } from '../notebook.manager';
 
@@ -9,6 +9,9 @@ import { INotebookProvider } from '../notebook.manager';
  */
 export class ObservableNotebookProvider implements INotebookProvider {
   public supportedFileTypes: Array<string> = ['.js', '.jsnb'];
+
+  private SITE_URL: string = 'https://observablehq.com';
+  private API_URL: string = 'https://api.observablehq.com';
   private logger: Logger = new Logger('observable.notebook.provider:', config.logLevel);
 
   /**
@@ -29,10 +32,17 @@ export class ObservableNotebookProvider implements INotebookProvider {
     parseOptions: any,
     loadNotebook: Function
   ): Promise<void> {
-    let notebookInfo: any;
     try {
-      let content: string = String(await fileUtils.readDataFile(notebookUrl, 'utf8'));
-      notebookInfo = JSON.parse(content);
+      const notebookDocumentUrl: string = notebookUrl.replace(this.SITE_URL, `${this.API_URL}`) + '.js';
+      this.logger.debug('getNotebook(): documentUrl:', notebookDocumentUrl);
+      fetch(notebookDocumentUrl)
+        .then((response: any) => response.text())
+        .then((notebookJS: string) => {
+          // parse notebook JS and create a notebook prototype for introspection
+          const notebookInfo = new Function(`${notebookJS.slice(0, -26)} return notebook;`)();
+          this.logger.debug('notebook:', JSON.stringify(notebookInfo));
+          loadNotebook(notebookInfo);
+        });
     } catch (error) {
       this.logger.logMessage(
         LogLevel.Error,
@@ -43,6 +53,5 @@ export class ObservableNotebookProvider implements INotebookProvider {
         `Unable to load notebook: '${notebookUrl}'. \n\t Error: ${error.message}`
       );
     }
-    loadNotebook(notebookInfo);
   }
 }
