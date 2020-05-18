@@ -84,6 +84,7 @@ export class NotebookView {
   private _html: string = '';
   private _viewUri: Uri;
   private _panel: WebviewPanel;
+  private _template: Template;
   private _notebook: Notebook;
   private _logger: Logger;
 
@@ -104,12 +105,15 @@ export class NotebookView {
     template: Template | undefined,
     panel?: WebviewPanel
   ) {
+    // save webview html template reference
+    this._template = template;
+
     // save ext path, document uri, and create view uri
     this._extensionPath = extensionPath;
     this._uri = uri;
     this._url = uri.toString(true);
     this._fileName = path.basename(uri.fsPath);
-    this._fileExtension = path.extname(this._fileName);
+    this._fileExtension = path.extname(this._fileName);    
     
     // check for remote data load
     if (this._url.startsWith('http://') || this._url.startsWith('https:')) {
@@ -136,27 +140,6 @@ export class NotebookView {
     this._logger = new Logger(`${viewType}:`, config.logLevel);
     this._logger.debug('initializing notebook:', this._url);
 
-    // create webview panel title
-    switch (viewType) {
-      case 'js.notebook.view':
-        this._title = this._fileName;
-        break;
-      default:
-        // notebook.help
-        this._title = 'Notebook View Help';
-        break;
-    }
-
-    // create html template for the webview
-    if (template && this._notebook) {
-      this._html = template?.replace({
-        notebookUrl: this._notebook.url,
-        notebookPath: this._notebook.path,
-        notebookName: this._notebook.fileName,
-        notebookAuthor: this._notebook.authorName
-      });
-    }
-
     // initialize webview panel
     this._panel = this.initWebview(viewType, viewColumn, panel);
     this.configure();
@@ -173,6 +156,18 @@ export class NotebookView {
     viewColumn: ViewColumn,
     viewPanel: WebviewPanel | undefined
   ): WebviewPanel {
+
+    // create webview panel title
+    switch (viewType) {
+      case 'js.notebook.view':
+        this._title = this._fileName;
+        break;
+      default:
+        // notebook.help
+        this._title = 'Notebook View Help';
+        break;
+    }
+
     if (!viewPanel) {
       // create new webview panel
       viewPanel = window.createWebviewPanel(
@@ -183,8 +178,22 @@ export class NotebookView {
       );
       viewPanel.iconPath = Uri.file(path.join(this._extensionPath, "./images/notebook.png"));
       this._panel = viewPanel;
-    } else {
+    } 
+    else {
+      // use deserialized webview panel
       this._panel = viewPanel;
+    }
+
+    // create webview html template
+    if (this._template && this._notebook) {
+      const cspSource: string = this.webview.cspSource;
+      this._html = this._template.replace({
+        cspSource: cspSource,
+        notebookUrl: this._notebook.url,
+        notebookPath: this._notebook.path,
+        notebookName: this._notebook.fileName,
+        notebookAuthor: this._notebook.authorName
+      });
     }
 
     // dispose view
@@ -229,52 +238,8 @@ export class NotebookView {
     return viewPanel;
   } // end of initWebview()
 
-  
   /**
-   * Launches new view via commands.executeCommand interface.
-   * @param viewName View name to launch.
-   * @param url View document url parameter.
-   * @see https://code.visualstudio.com/api/extension-guides/command
-   */
-  private loadView(viewName: string, url: string): void {
-    const fileUri: Uri = Uri.parse(url);
-    try {
-      this._logger.debug(`loadView(): loading view... \n ${viewName}`, url);
-      //fileUri.toString(true)); // skip encoding
-      if (url.startsWith("http://") || url.startsWith("https://")) {
-        // launch requested remote data view command
-        this._logger.debug(`loadView():executeCommand: \n ${viewName}`, url);
-        commands.executeCommand(viewName, fileUri);
-      } else if (fs.existsSync(fileUri.fsPath)) {
-        // launch requested local data view command
-        this._logger.debug(`loadView():executeCommand: \n ${viewName}`, fileUri.fsPath);
-        commands.executeCommand(viewName, fileUri);
-      } else {
-        // try to find requested data file(s) in open workspace
-        workspace.findFiles(`**/${url}`).then((files) => {
-          if (files.length > 0) {
-            // pick the 1st matching file from the workspace
-            const dataUri: Uri = files[0];
-            // launch requested view command
-            this._logger.debug(`loadView():executeCommand: \n ${viewName}`, 
-              dataUri.toString(true)); // skip encoding
-            commands.executeCommand(viewName, dataUri);
-          } else {
-            this._logger.error(`loadView(): Error:\n no such files in this workspace:`, url);
-            window.showErrorMessage(`No '**/${url}' file(s) found in this workspace!`);
-          }
-        });
-      }
-    } catch (error) {
-      this._logger.error(`loadView(${url}): Error:\n`, error.message);
-      window.showErrorMessage(
-        `Failed to load '${viewName}' for document: '${url}'! Error:\n${error.message}`
-      );
-    }
-  } // end of loadView()
-
-  /**
-   * Creates webview options with local resource roots, etc. for map webview display.
+   * Creates webview options with local resource roots, etc. for notebook webview display.
    */
   private getWebviewOptions(): any {
     return {
@@ -318,6 +283,49 @@ export class NotebookView {
     // when map view DOM content is initialized
     // see: this.refresh();
   }
+  
+  /**
+   * Launches new view via commands.executeCommand interface.
+   * @param viewName View name to launch.
+   * @param url View document url parameter.
+   * @see https://code.visualstudio.com/api/extension-guides/command
+   */
+  private loadView(viewName: string, url: string): void {
+    const fileUri: Uri = Uri.parse(url);
+    try {
+      this._logger.debug(`loadView(): loading view... \n ${viewName}`, url);
+      //fileUri.toString(true)); // skip encoding
+      if (url.startsWith("http://") || url.startsWith("https://")) {
+        // launch requested remote data view command
+        this._logger.debug(`loadView():executeCommand: \n ${viewName}`, url);
+        commands.executeCommand(viewName, fileUri);
+      } else if (fs.existsSync(fileUri.fsPath)) {
+        // launch requested local data view command
+        this._logger.debug(`loadView():executeCommand: \n ${viewName}`, fileUri.fsPath);
+        commands.executeCommand(viewName, fileUri);
+      } else {
+        // try to find requested data file(s) in open workspace
+        workspace.findFiles(`**/${url}`).then((files) => {
+          if (files.length > 0) {
+            // pick the 1st matching file from the workspace
+            const dataUri: Uri = files[0];
+            // launch requested view command
+            this._logger.debug(`loadView():executeCommand: \n ${viewName}`, 
+              dataUri.toString(true)); // skip encoding
+            commands.executeCommand(viewName, dataUri);
+          } else {
+            this._logger.error(`loadView(): Error:\n no such files in this workspace:`, url);
+            window.showErrorMessage(`No '**/${url}' file(s) found in this workspace!`);
+          }
+        });
+      }
+    } catch (error) {
+      this._logger.error(`loadView(${url}): Error:\n`, error.message);
+      window.showErrorMessage(
+        `Failed to load '${viewName}' for document: '${url}'! Error:\n${error.message}`
+      );
+    }
+  } // end of loadView()
 
   /**
    * Refreshes notebook view on load or vscode IDE reload.

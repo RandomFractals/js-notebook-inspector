@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self' vscode-resource: https://*;
-        script-src vscode-resource: https: 'unsafe-inline' 'unsafe-eval';
-        style-src vscode-resource: https: 'unsafe-inline';
-        img-src 'self' vscode-resource: https://* blob: data:;
+      content="default-src 'self' {cspSource} https://*;
+        script-src {cspSource} https: 'unsafe-inline' 'unsafe-eval';
+        style-src {cspSource} https: 'unsafe-inline';
+        img-src 'self' {cspSource} https://* blob: data:;
         font-src 'self' vscode-resource: https://* blob: data:;
         connect-src 'self' vscode-resource: https://* wss://*;
         worker-src 'self' vscode-resource: https://* blob: data:">
