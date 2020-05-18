@@ -402,13 +402,7 @@ export class NotebookView {
       // save notebook file
       switch (fileType) {
         case '.js':
-          const notebookDocumentUrl: string = 
-            `${config.observableApiUrl}/${this._notebook.authorName}/${this._notebook.fileName}.js`;
-          fetch(notebookDocumentUrl)
-            .then((response: any) => response.text())
-            .then((notebookJS: string) => {
-              this.saveFile(notebookFileUri, notebookJS);
-            });
+          this.saveFile(notebookFileUri, this._content);
           break;
         case '.html':
           // TODO
