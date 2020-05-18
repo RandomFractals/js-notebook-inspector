@@ -331,8 +331,10 @@ export class NotebookView {
     if (this._url.startsWith('https://') && dataEncoding === 'utf8') {
       // load remote notebook document
       notebookManager.getNotebook(this._url, {}, // parse options
-        (notebookDocument: any) => {
-          this.refreshView(notebookDocument);
+        (notebookJS: string) => {
+          this._content = notebookJS;
+          this._notebook.source = notebookJS;
+          this.refreshView(this._notebook.module);
         });
     } else if (dataEncoding === 'utf8') {
       // open local text document

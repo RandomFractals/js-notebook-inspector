@@ -37,10 +37,8 @@ export class ObservableNotebookProvider implements INotebookProvider {
       fetch(notebookDocumentUrl)
         .then((response: any) => response.text())
         .then((notebookJS: string) => {
-          // parse notebook JS and create a notebook prototype for introspection
-          const notebookInfo = new Function(`${notebookJS.slice(0, -26)} return notebook;`)();
-          // this.logger.debug('notebook:', JSON.stringify(notebookInfo));
-          loadNotebook(notebookInfo);
+          this.logger.debug('notebookJS:', notebookJS);
+          loadNotebook(notebookJS);
         });
     } catch (error) {
       this.logger.logMessage(
