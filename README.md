@@ -9,7 +9,7 @@
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/RandomFractalsInc.js-notebook-inspector.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector)
 [![Downloads](https://vsmarketplacebadge.apphb.com/downloads/RandomFractalsInc.js-notebook-inspector.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector)
 
-[VSCode](https://code.visualstudio.com/) extension for Interactive Preview of [Observable](https://observablehq.com/explore) JS Notebooks 📚
+[VSCode](https://code.visualstudio.com/) extension for Interactive Preview of [Observable](https://observablehq.com/explore) JS Notebooks 📚 & Notebook 📓 Nodes ⎇ & Cells ⌗ source code.
 
 ![Notebook 📓 Inspector 🕵️](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-inspector.png?raw=true 
  "JS Notebook 📓 Inspector 🕵️")
@@ -17,7 +17,7 @@
 # Alpha v. Features
 
 - 🕵️ Interactive Preview of JS Notebook 📓
--  📥 Save Notebook 📓 as [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) or as `.nb.json` `{}` document with Author 👨 info & Nodes ⎇ with Code Cells ⌗ info:
+-  📥 Save Notebook 📓 as `.js` [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) || as `.nb.json` `{}` document w/Author 👨 info & Nodes ⎇ w/Code Cells ⌗:
 
 ![Notebook 📓 JSON View](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-json.png?raw=true 
  "Notebook 📓 JSON View")
