@@ -1,7 +1,7 @@
 {
   "name": "js-notebook-inspector",
   "displayName": "Observable JS Notebook Inspector",
-  "description": "Observable JS Notebook Inspector",
+  "description": "JS Notebook 📓 Inspector 🕵️ -> vscode extension for Interactive Preview of Observable JS Notebooks 📚 & Notebook 📓 Nodes ⎇ & Cells ⌗ source code.",
   "version": "1.3.0",
   "icon": "images/notebook.png",
   "publisher": "RandomFractalsInc",
@@ -20,7 +20,7 @@
   "keywords": [
     "observable",
     "javascript",
-    "notebook",
+    "notebook 📓",
     "inspector 🕵️"
   ],
   "galleryBanner": {
