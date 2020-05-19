@@ -17,8 +17,7 @@
 # Alpha v. Features
 
 - 🕵️ Interactive Preview of JS Notebook 📓
--  📥 Save Notebook in [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) format
--  📥 Save Notebook JSON `{}` document with Author 👨 info & Notebook 📓 Nodes ⎇ with Code Cell ⌗ values:
+-  📥 Save Notebook 📓 as [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) or as `.nb.json` `{}` document with Author 👨 info & Nodes ⎇ with Code Cells ⌗ info:
 
 ![Notebook 📓 JSON View](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-json.png?raw=true 
  "Notebook 📓 JSON View")
