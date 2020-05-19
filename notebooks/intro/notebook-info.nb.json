@@ -1,0 +1,260 @@
+{
+  "id": "33e49de92e6a98bc",
+  "slug": "notebook-info",
+  "trashed": false,
+  "likes": 4,
+  "forks": 0,
+  "fork_of": null,
+  "update_time": "2019-05-08T18:40:27.351Z",
+  "publish_time": "2018-09-25T18:00:57.033Z",
+  "publish_version": 250,
+  "thumbnail": "2625fadc1ffc39a299fe0a2dc57cd207ac1f45d1708b19e73a450ef438fc1526",
+  "owner": {
+    "id": "17b72db66175b428",
+    "github_login": "RandomFractals",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/656833?v=4",
+    "login": "randomfractals",
+    "name": "Taras Novak",
+    "bio": "I map and graph data",
+    "home_url": "https://www.linkedin.com/in/tarasnovak",
+    "type": "individual"
+  },
+  "creator": {
+    "id": "17b72db66175b428",
+    "github_login": "RandomFractals",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/656833?v=4",
+    "login": "randomfractals",
+    "name": "Taras Novak",
+    "bio": "I map and graph data",
+    "home_url": "https://www.linkedin.com/in/tarasnovak"
+  },
+  "collections": [
+    {
+      "owner": {
+        "id": "17b72db66175b428",
+        "github_login": "RandomFractals",
+        "avatar_url": "https://avatars1.githubusercontent.com/u/656833?v=4",
+        "login": "randomfractals",
+        "name": "Taras Novak",
+        "bio": "I map and graph data",
+        "home_url": "https://www.linkedin.com/in/tarasnovak",
+        "type": "individual"
+      },
+      "id": "17ac85a9b2655bcc",
+      "type": "public",
+      "slug": "observable-notebooks",
+      "title": "Observable Notebooks",
+      "description": "Observable API Notebooks",
+      "update_time": "2018-09-26T12:50:07.535Z",
+      "pinned": true,
+      "ordered": false,
+      "thumbnail": "903b6a06835d53ab79371540c65abd29699cb08834501ad00cc0d6d3db3e804a",
+      "document_count": 4
+    }
+  ],
+  "files": [],
+  "version": 250,
+  "title": "Notebook Inspector 🕵️‍♀️",
+  "nodes": [
+    {
+      "id": 0,
+      "value": "md `# Notebook Inspector 🕵️‍♀️\n\nSimple Observable js Notebook for notebook info, code graph & code stats display. \n\n*see [Notebooks Visualizer](https://beta.observablehq.com/@randomfractals/notebooks) for user bio, original & forked notebooks stats, etc.*\n`",
+      "pinned": false
+    },
+    {
+      "id": 129,
+      "value": "md `## Input Notebook Url`",
+      "pinned": false
+    },
+    {
+      "id": 31,
+      "value": "notebookUrlParam = new URLSearchParams(html`<a href>`.search).get('notebook')",
+      "pinned": false
+    },
+    {
+      "id": 28,
+      "value": "viewof notebookUrl = text({\n  placeholder: 'type observable notebook url and click Inspect', \n  description: 'enter observable notebook url to get notebook stats',\n  value: `${notebookUrlParam ? notebookUrlParam : '@randomfractals/notebook-info'}`,\n  submit: 'Inspect'})",
+      "pinned": false
+    },
+    {
+      "id": 91,
+      "value": "shareLink = md `*share a link to your notebook info: [${notebookUrl}](?notebook=${notebookUrl})*`",
+      "pinned": false
+    },
+    {
+      "id": 172,
+      "value": "downloadLink = html `Download\n<a href=\"https://api.observablehq.com/${notebookUrl}.js\" target=\"_blank\" title=\"Download notebook\">${notebookUrl}.js</a>`",
+      "pinned": false
+    },
+    {
+      "id": 126,
+      "value": "md `## User Info & Notebook Code Graph`",
+      "pinned": false
+    },
+    {
+      "id": 179,
+      "value": "notebookLink = getNotebookHtml(notebook)\n//md `## [${notebookUrl}](https://beta.observablehq.com/${notebookUrl})`",
+      "pinned": false
+    },
+    {
+      "id": 94,
+      "value": "userBio = getUserBioHtml(userName, userInfo)",
+      "pinned": false
+    },
+    {
+      "id": 190,
+      "value": "notebookStats = html `\nTotal Cells: <a href=\"#notebookNodes\">${notebookNodes.length}</a> |\nFunctions: <a href=\"#notebookFunctions\">${notebookFunctions.length}</a> |\nNamed Cells: <a href=\"#namedNotebookNodes\">${namedNotebookNodes.length}</a> |\nMd Cells: <a href=\"#mdCells\">${mdCells.length}</a> |\nLines of Code: <a href=\"#notebookCode\">${notebookCode.split('\\n').length}</a> |\nImports: <a href=\"#notebookImports\">${notebookImports.length}</a>\n`",
+      "pinned": false
+    },
+    {
+      "id": 99,
+      "value": "notebookGraph = dot `\ndigraph \"${notebookUrl}\" {\n  rankdir = LR;\n  \"@${userInfo.login}\" [shape=oval, style=filled, fillcolor=\"#b3e6cc\",\n    href=\"https://beta.observablehq.com/@${userInfo.login}\", target=_blank]\n  \"/${notebook.slug}\" [shape=rectangle, style=filled, fillcolor=\"#b3e0ff\",\n    href=\"https://beta.observablehq.com/${notebookUrl}\", target=_blank]\n  \"@${userInfo.login}\" -> \"/${notebook.slug}\"\n  ${notebookFunctionNames.map(functionName => \n    `\"${functionName}(...)\" [shape=rectangle, style=filled, fillcolor=\"#f6f6f6\", \n      href=\"https://beta.observablehq.com/${notebookUrl}/#${functionName}\", target=_blank]`).join('\\n')}\n  ${notebookFunctionNames.map(functionName => `\"/${notebook.slug}\" -> \"${functionName}(...)\"`).join('\\n')}\n  ${namedCells.map(cellName => \n    `\"#${cellName}\" [shape=rectangle, style=filled, fillcolor=\"#f6f6f6\", \n      href=\"https://beta.observablehq.com/${notebookUrl}/#${cellName}\", target=_blank]`).join('\\n')}\n  ${namedCells.map(cellName => `\"/${notebook.slug}\" -> \"#${cellName}\"`).join('\\n')}\n  ${notebookImports.map(importedFrom => \n    `\"${importedFrom.cell}(...)\" [shape=oval, style=filled, fillcolor=\"#f6f6f6\", \n      href=\"https://beta.observablehq.com/${importedFrom.notebook}/#${importedFrom.cell}\", target=_blank]`).join('\\n')}\n  ${notebookImports.map(importedFrom => `\"import from ${importedFrom.notebook}\" -> \"${importedFrom.cell}(...)\"`).join('\\n')}\n}`",
+      "pinned": false
+    },
+    {
+      "id": 108,
+      "value": "html`\n${DOM.download(await rasterize(notebookGraph), `${notebookUrl}-graph.png`, \"Save as PNG\")}\n${DOM.download(await serialize(notebookGraph), `${notebookUrl}-graph.svg`, \"Save as SVG\")}\n`",
+      "pinned": false
+    },
+    {
+      "id": 237,
+      "value": "md `*TODO: link dependent code cells and imports and number arcs or provide play for the order of notebook execution display*`",
+      "pinned": false
+    },
+    {
+      "id": 66,
+      "value": "userName = notebookUrl.substring(1, notebookUrl.indexOf('/'))",
+      "pinned": false
+    },
+    {
+      "id": 70,
+      "value": "userInfo = getUserInfo(userName)",
+      "pinned": false
+    },
+    {
+      "id": 39,
+      "value": "apiUrl = 'https://observable-cors.glitch.me/https://api.observablehq.com'",
+      "pinned": false
+    },
+    {
+      "id": 113,
+      "value": "md `## [${notebookUrl}](https://beta.observablehq.com/${notebookUrl}) Notebook Info`",
+      "pinned": false
+    },
+    {
+      "id": 44,
+      "value": "notebook = getNotebookByUrl(notebookUrl)",
+      "pinned": true
+    },
+    {
+      "id": 49,
+      "value": "notebookNodes = notebook.nodes",
+      "pinned": true
+    },
+    {
+      "id": 60,
+      "value": "notebookFunctions = getNotebookFunctions(notebook)",
+      "pinned": true
+    },
+    {
+      "id": 143,
+      "value": "notebookFunctionNames = notebookFunctions.map(funct => funct.value.substring(0, funct.value.indexOf('(')).replace('function', '').replace(' ', ''))",
+      "pinned": false
+    },
+    {
+      "id": 63,
+      "value": "namedNotebookNodes = getNamedNotebookCells(notebook)",
+      "pinned": true
+    },
+    {
+      "id": 164,
+      "value": "namedCells = namedNotebookNodes.map(node => node.value.substring(0, node.value.indexOf('=')).replace('viewof ', '').replace(' ', ''))",
+      "pinned": false
+    },
+    {
+      "id": 216,
+      "value": "notebookImports = getNotebookImports(notebook)",
+      "pinned": false
+    },
+    {
+      "id": 135,
+      "value": "htmlCells = notebook.nodes.filter(node => isMarkupCell(node.value, 'html'))",
+      "pinned": false
+    },
+    {
+      "id": 138,
+      "value": "mdCells = notebook.nodes.filter(node =>  isMarkupCell(node.value, 'md'))",
+      "pinned": false
+    },
+    {
+      "id": 141,
+      "value": "svgCells = notebook.nodes.filter(node => isMarkupCell(node.value, 'svg'))",
+      "pinned": false
+    },
+    {
+      "id": 150,
+      "value": "function isMarkupCell(code, markup) {\n  return code.length >= (markup.length + 2) &&\n    code.substring(0, markup.length + 2).replace(' ', '').startsWith(markup + '`');\n}",
+      "pinned": false
+    },
+    {
+      "id": 20,
+      "value": "md `## Notebook Cells Code View`",
+      "pinned": false
+    },
+    {
+      "id": 23,
+      "value": "notebookCells = html `${\n  notebook.nodes\n    .map((d,i) => `<pre style=\"font-size:14px; color:${cellCodeColor(i)}\">${d.value.replace(/</g, \"&lt;\")}</pre>`)\n    .join(\"<hr style='margin:0;padding:0'>\")\n}`",
+      "pinned": false
+    },
+    {
+      "id": 196,
+      "value": "md `## Raw Notebook Code`",
+      "pinned": false
+    },
+    {
+      "id": 194,
+      "value": "notebookCode = notebook.nodes.map((d,i) => d.value).join(\"\\n\")",
+      "pinned": false
+    },
+    {
+      "id": 25,
+      "value": "function cellCodeColor(i) {\n  return '#' + ('4b9ec1-b5a636-495e1d-e55934-fa7921'.split('-')[i % 5]);\n} ",
+      "pinned": false
+    },
+    {
+      "id": 86,
+      "value": "userBioStyles = html \n`<style>\n#avatar {float: left;} \n#avatar img {max-width: 24px; border-radius: 12px; margin-right: 10px;}\n</style>\n`",
+      "pinned": false
+    },
+    {
+      "id": 230,
+      "value": "notebookStyles = html `\n<style>\n.notebook-thumbnail {float: left;} \n.notebook-thumbnail img {max-width: 128px; border-radius: 2px; margin-right: 10px;}\n</style>\n`",
+      "pinned": false
+    },
+    {
+      "id": 4,
+      "value": "md `## Imports`",
+      "pinned": false
+    },
+    {
+      "id": 6,
+      "value": "import {text} from \"@jashkenas/inputs\"",
+      "pinned": true
+    },
+    {
+      "id": 8,
+      "value": "import {dot} from '@mbostock/graphviz'",
+      "pinned": true
+    },
+    {
+      "id": 12,
+      "value": "import {rasterize, serialize} from '@mbostock/saving-svg'",
+      "pinned": true
+    },
+    {
+      "id": 35,
+      "value": "import {getUserInfo, getUserBioHtml, getNotebookByUrl, getNotebookHtml, getNotebookFunctions, getNamedNotebookCells, getNotebookImports} from '@randomfractals/notebooks'",
+      "pinned": false
+    }
+  ]
+}

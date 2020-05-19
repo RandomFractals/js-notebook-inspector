@@ -404,6 +404,18 @@ export class NotebookView {
         case '.js':
           this.saveFile(notebookFileUri, this._content);
           break;
+        case '.nb.json':
+          const document: any = await fetch(
+            this._url.replace(config.observableSiteUrl, `${config.observableApiUrl}/document`), 
+            {
+              headers: {
+                origin: config.observableSiteUrl,
+                referer: this._url  
+              }
+            }
+          ).then((response: any) => response.json());
+          this.saveFile(notebookFileUri, JSON.stringify(document, null, 2));
+          break;
         case '.html':
           // TODO
           window.showInformationMessage('Save notebook html coming soon! :)');
