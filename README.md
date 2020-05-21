@@ -22,13 +22,16 @@
 ![Notebook 📓 JSON View](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-json.png?raw=true 
  "Notebook 📓 JSON View")
 
-# Planned Features
+# Planned Beta Features
 
-- ⎇ Notebook Graph View with links to imported Cells ⌗
 - 📚 Tree View ⚼ panel with starred ⭐ Notebooks 📓, Collections ▒ & Notebook Authors 👨
+- ⎇ Notebook Graph View with links to imported Cells ⌗
 - ⌗ Cell Bookmarks 🔖
 
 ...
+
+![Notebook Collections 📚 Tree View](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-collections-tree-view.png?raw=true 
+ "Notebook Collections 📚 Tree View")
 
 # Usage
 
