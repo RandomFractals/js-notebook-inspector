@@ -1,7 +1,13 @@
+import {
+  TreeItem,
+  TreeItemCollapsibleState,
+} from 'vscode';
+import * as path from 'path';
+
 /**
  * Notebook info type.
  */
-export class Notebook {
+export class Notebook extends TreeItem {
 
   /**
    * Creates new notebook from url.
@@ -13,7 +19,7 @@ export class Notebook {
     public fileName: string,
     public authorName: string = '',
     public source: string = '') {
-    
+    super(fileName, TreeItemCollapsibleState.Collapsed);
   }
 
   /**
@@ -34,4 +40,27 @@ export class Notebook {
     }
     return jsModule;
   }
+
+  /**
+   * Gets notebook file tooltip.
+   */
+  get tooltip(): string {
+    return `${this.authorName}/${this.fileName}`;
+  }
+
+  /**
+   * Gets notebook description.
+   */
+  get description(): string {
+    // TODO: change this to show notebook title, etc. later
+    return this.url;
+  }
+
+  /**
+   * Notebook icon.
+   */
+  iconPath = {
+    light: path.join(__filename, '../../notebook.svg'),
+    dark: path.join(__filename, '../../notebook.svg')
+  };
 }

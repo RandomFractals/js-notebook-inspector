@@ -37,10 +37,34 @@
   "activationEvents": [
     "onCommand:js.notebook.url",
     "onCommand:js.notebook.view",
-    "onWebviewPanel:js.notebook.view"
+    "onWebviewPanel:js.notebook.view",
+    "onView:js.notebook.collections"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "js-notebook-inspector",
+          "title": "JS Notebooks",
+          "icon": "images/notebook-collections.svg"
+        }
+      ]
+    },
+    "views": {
+      "js-notebook-inspector": [
+        {
+          "id": "js.notebook.collections",
+          "name": "JS Notebook Collections"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "js.notebook.collections",
+        "contents": "No notebookds found. Try loading some from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
+      }
+    ],
     "commands": [
       {
         "command": "js.notebook.view",

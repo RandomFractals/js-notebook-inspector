@@ -1,3 +1,14 @@
+import {
+  Disposable,
+  Event,
+  EventEmitter,
+  FileType,
+  TreeDataProvider,
+  TreeItem,
+  TreeItemCollapsibleState,
+  window,
+  workspace
+} from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
 import * as config from './config';
@@ -48,7 +59,7 @@ export interface INotebookProvider {
 /**
  * INotebookManager implementation.
  */
-export class NotebookManager implements INotebookManager {
+export class NotebookManager implements INotebookManager, TreeDataProvider<Notebook> {
   
   // singleton instance
   private static _instance: NotebookManager;
@@ -122,6 +133,27 @@ export class NotebookManager implements INotebookManager {
   public getNotebook(notebookUrl: string, parseOptions: any, loadNotebook: Function): void {
     const notebookProvider: INotebookProvider = this.getNotebookProvider(notebookUrl);
     notebookProvider.getNotebook(notebookUrl, parseOptions, loadNotebook);
+  }
+
+  /**
+   * Gets notebook collections tree item.
+   * @param notebook Notebook tree item to add to the notebooks tree view.
+   */
+  getTreeItem(notebook: Notebook): TreeItem {
+    return notebook;
+  }
+
+  /**
+   * Gets notebook collections for the tree view display.
+   * @param notebook The notebook to get children for, or null for notebooks tree root.
+   */
+  async getChildren(notebook?: Notebook): Promise<Notebook[] | undefined> {
+    if (!notebook) { 
+      // TODO: show starred notebooks for the notebook collections root to start with
+      return undefined;
+    }
+    // TODO: get and return imported notebooks
+    return [];
   }
 }
 

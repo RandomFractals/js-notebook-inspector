@@ -4,5 +4,5 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   width="24" height="24" 
   viewBox="0 0 24 24">
-    <text x="0" y="15" fill="white">📚</text>
+    <text x="0" y="24" font-size="24px" fill="white">📚</text>
 </svg>
