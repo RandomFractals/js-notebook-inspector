@@ -62,7 +62,7 @@
     "viewsWelcome": [
       {
         "view": "js.notebook.collections",
-        "contents": "No notebookds found. Try loading some from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
+        "contents": "No notebooks found. Try loading some from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
       }
     ],
     "commands": [
