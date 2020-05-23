@@ -141,21 +141,21 @@ export class NotebookView {
     this._logger.debug('initializing notebook:', this._url);
 
     // initialize webview panel
-    this._panel = this.initWebview(viewType, viewColumn, panel);
+    this.initWebview(viewType, viewColumn, panel);
     this.configure();
   } // end of constructor()
 
   /**
-   * Initializes map webview panel.
-   * @param viewType Map webview type, i.e. map.view.
+   * Initializes notebook webview panel.
+   * @param viewType Notebook webview type, i.e. js.notebook.view.
    * @param viewColumn vscode IDE view column to display preview in.
    * @param viewPanel Optional web view panel to initialize.
    */
-  private initWebview(
+  private async initWebview(
     viewType: string,
     viewColumn: ViewColumn,
     viewPanel: WebviewPanel | undefined
-  ): WebviewPanel {
+  ): Promise<void> {
 
     // create webview panel title
     switch (viewType) {
@@ -196,6 +196,17 @@ export class NotebookView {
       });
     }
 
+    // get notebook info document
+    this._notebook.document = await fetch(
+      this._url.replace(config.observableSiteUrl, `${config.observableApiUrl}/document`), 
+        {
+          headers: {
+            origin: config.observableSiteUrl,
+            referer: this._url  
+          }
+        }
+      ).then((response: any) => response.json());
+    
     // dispose view
     viewPanel.onDidDispose(() => {
         this.dispose();
@@ -234,8 +245,6 @@ export class NotebookView {
       null,
       this._disposables
     );
-
-    return viewPanel;
   } // end of initWebview()
 
   /**
@@ -405,16 +414,7 @@ export class NotebookView {
           this.saveFile(notebookFileUri, this._content);
           break;
         case '.nb.json':
-          const document: any = await fetch(
-            this._url.replace(config.observableSiteUrl, `${config.observableApiUrl}/document`), 
-            {
-              headers: {
-                origin: config.observableSiteUrl,
-                referer: this._url  
-              }
-            }
-          ).then((response: any) => response.json());
-          this.saveFile(notebookFileUri, JSON.stringify(document, null, 2));
+          this.saveFile(notebookFileUri, JSON.stringify(this._notebook.document, null, 2));
           break;
         case '.html':
           // TODO

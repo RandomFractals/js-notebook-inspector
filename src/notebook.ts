@@ -14,11 +14,14 @@ export class Notebook extends TreeItem {
    * @param url Notebook url.
    * @param fileName Notebook file name.
    * @param authorName Notebook author name.
+   * @param source Optional notebook source code.
+   * @param document Optional notebook metadata document.
    */
   constructor(public url: string,
     public fileName: string,
     public authorName: string = '',
-    public source: string = '') {
+    public source: string = '',
+    public document: any = undefined) {
     super(fileName, TreeItemCollapsibleState.Collapsed);
   }
 
