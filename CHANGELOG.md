@@ -3,6 +3,15 @@
 See [releases](https://github.com/RandomFractals/js-notebook-inspector/releases)
 for the brief versions information and feature details with screen pics for this [JS Notebook 📓 Inspector 🕵️](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector) VSCode extension.
 
+## v1.4.0 [2020-05-22]
+
+- [#7](https://github.com/RandomFractals/js-notebook-inspector/issues/7)
+Add js notebook collections view to the vscode activity bar
+- [#17](https://github.com/RandomFractals/js-notebook-inspector/issues/17)
+Add html notebook runtime save option for adding to web sites or viewing locally in a browser
+- [#32](https://github.com/RandomFractals/js-notebook-inspector/issues/32)
+Load notebook metadata on notebook webview panel init
+
 ## v1.3.0 [2020-05-18]
 
 - [#28](https://github.com/RandomFractals/js-notebook-inspector/issues/28)
