@@ -417,8 +417,9 @@ export class NotebookView {
           this.saveFile(notebookFileUri, JSON.stringify(this._notebook.document, null, 2));
           break;
         case '.html':
-          // TODO
-          window.showInformationMessage('Save notebook html coming soon! :)');
+          this.saveFile(notebookFileUri, config.observableHtmlTemplate
+            .replace('{title}', this._notebook.fileName)
+            .replace('{notebookPath}', this._notebook.path));
           break;
       }
     }
