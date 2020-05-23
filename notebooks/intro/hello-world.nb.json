@@ -1,0 +1,47 @@
+{
+  "id": "6759b582dec65059",
+  "slug": "hello-world",
+  "trashed": false,
+  "likes": 1,
+  "forks": 6,
+  "fork_of": null,
+  "update_time": "2018-07-10T02:10:52.272Z",
+  "publish_time": "2018-06-29T22:08:15.209Z",
+  "publish_version": 7,
+  "thumbnail": "10745a9814ef0f08d04bc94c8bcbf85778289b45eb2ec74212c82732ce7bfeae",
+  "owner": {
+    "id": "0bf14b8d9c6eb88a",
+    "github_login": "tmcw",
+    "avatar_url": "https://avatars.observableusercontent.com/avatar/f31b4b432312ae389d14a4f4bfb855851b0e61f6e7eb0c95142cf8a28fea43e3",
+    "login": "tmcw",
+    "name": "Tom MacWright",
+    "bio": ".",
+    "home_url": "https://macwright.org/",
+    "type": "individual"
+  },
+  "creator": {
+    "id": "0bf14b8d9c6eb88a",
+    "github_login": "tmcw",
+    "avatar_url": "https://avatars.observableusercontent.com/avatar/f31b4b432312ae389d14a4f4bfb855851b0e61f6e7eb0c95142cf8a28fea43e3",
+    "login": "tmcw",
+    "name": "Tom MacWright",
+    "bio": ".",
+    "home_url": "https://macwright.org/"
+  },
+  "collections": [],
+  "files": [],
+  "version": 7,
+  "title": "Hello ${name}",
+  "nodes": [
+    {
+      "id": 0,
+      "value": "hello = md`# Hello ${name}`",
+      "pinned": false
+    },
+    {
+      "id": 5,
+      "value": "name = 'world'",
+      "pinned": false
+    }
+  ]
+}
