@@ -17,9 +17,9 @@
 # Alpha v. Features
 
 - 🕵️ Interactive Preview of JS Notebook 📓
-- 📥 Notebook 📓 [runtime](https://github.com/observablehq/runtime) `html`/`js`
+- 📥 Notebook 📓 `html`/`js` [runtime](https://github.com/observablehq/runtime) webpage 📰
 for adding to web sites || viewing locally in a browser 🌐
-- 💾 Save Notebook 📓 as `.js` [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) || `.nb.json` `{}` document w/Author 👨 info & Nodes ⎇ w/Code Cells ⌗:
+- 💾 Save Notebook 📓 as `.js` [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) || [`.nb.json {}`](https://github.com/RandomFractals/js-notebook-inspector/blob/master/notebooks/intro/hello-world.nb.json) document w/Author 👨 info & Nodes ⎇ w/Code Cells ⌗:
 
 ![Notebook 📓 JSON View](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-json.png?raw=true 
  "Notebook 📓 JSON View")
