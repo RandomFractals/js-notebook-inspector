@@ -18,6 +18,7 @@ import {
   TemplateManager,
 } from './template.manager';
 import { notebookManager } from './notebook.manager';
+import { NotebookTreeDataProvider } from './notebook.providers/notebook.tree.data.provider';
 import { viewManager } from './view.manager';
 
 // extension logger
@@ -32,8 +33,13 @@ export function activate(context: ExtensionContext) {
   const extensionPath: string = context.extensionPath;
   logger.debug('activate(): activating from extPath:', extensionPath);
 
-  // register notebook manager/notebook collections tree view data provider
-  window.registerTreeDataProvider('js.notebook.collections', notebookManager);
+  // register notebook collections tree view data providers
+  window.registerTreeDataProvider('js.notebook.open',
+    new NotebookTreeDataProvider('Open'));
+  window.registerTreeDataProvider('js.notebook.popular',
+    new NotebookTreeDataProvider('Popular'));
+  window.registerTreeDataProvider('js.notebook.favorite',
+    new NotebookTreeDataProvider('Favorite'));
   
   // initialize webview panel templates
   const templateManager: ITemplateManager = new TemplateManager(context.asAbsolutePath('web'));

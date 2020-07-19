@@ -34,6 +34,15 @@ export interface INotebookManager {
   * @param loadNotebook Load notebook callback.
   */
   getNotebook(notebookUrl: string, parseOptions: any, loadNotebook: Function): void;
+
+  /**
+  * Gets notebooks info.
+  * @param notebooksUrl Notebooks url with search query params.
+  * @param parseOptions Notebooks parse options.
+  * @param loadNotebook Load notebooks callback.
+  */
+  getNotebooks(notebooksUrl: string, parseOptions: any, loadNotebooks: Function): void;
+
 }
 
 /**
@@ -54,12 +63,20 @@ export interface INotebookProvider {
    */
   getNotebook(notebookUrl: string, parseOptions: any, loadNotebook: Function): void;
  
+  /**
+  * Gets notebooks info.
+  * @param notebooksUrl Notebooks url with search query params.
+  * @param parseOptions Notebooks parse options.
+  * @param loadNotebook Load notebooks callback.
+  */
+  getNotebooks(notebooksUrl: string, parseOptions: any, loadNotebooks: Function): void;
+
 }
 
 /**
  * INotebookManager implementation.
  */
-export class NotebookManager implements INotebookManager, TreeDataProvider<Notebook> {
+export class NotebookManager implements INotebookManager {
   
   // singleton instance
   private static _instance: NotebookManager;
@@ -136,24 +153,14 @@ export class NotebookManager implements INotebookManager, TreeDataProvider<Noteb
   }
 
   /**
-   * Gets notebook collections tree item.
-   * @param notebook Notebook tree item to add to the notebooks tree view.
-   */
-  getTreeItem(notebook: Notebook): TreeItem {
-    return notebook;
-  }
-
-  /**
-   * Gets notebook collections for the tree view display.
-   * @param notebook The notebook to get children for, or null for notebooks tree root.
-   */
-  async getChildren(notebook?: Notebook): Promise<Notebook[] | undefined> {
-    if (!notebook) { 
-      // TODO: show starred notebooks for the notebook collections root to start with
-      return undefined;
-    }
-    // TODO: get and return imported notebooks
-    return [];
+  * Gets notebooks info.
+  * @param notebooksUrl Notebooks url with search query params.
+  * @param parseOptions Notebooks parse options.
+  * @param loadNotebook Load notebooks callback.
+  */
+  public getNotebooks(notebooksUrl: string, parseOptions: any, loadNotebooks: Function): void {
+    const notebookProvider: INotebookProvider = this.getNotebookProvider(notebooksUrl);
+    notebookProvider.getNotebooks(notebooksUrl, parseOptions, loadNotebooks);
   }
 }
 

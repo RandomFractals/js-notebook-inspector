@@ -38,7 +38,9 @@
     "onCommand:js.notebook.url",
     "onCommand:js.notebook.view",
     "onWebviewPanel:js.notebook.view",
-    "onView:js.notebook.collections"
+    "onView:js.notebook.open",
+    "onView:js.notebook.popular",
+    "onView:js.notebook.favorite"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -54,15 +56,23 @@
     "views": {
       "js-notebook-inspector": [
         {
-          "id": "js.notebook.collections",
-          "name": "JS Notebook Collections"
+          "id": "js.notebook.open",
+          "name": "Open"
+        },
+        {
+          "id": "js.notebook.popular",
+          "name": "Popular"
+        },
+        {
+          "id": "js.notebook.favorite",
+          "name": "Favorite"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "js.notebook.collections",
-        "contents": "No notebooks found. Try loading some from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
+        "view": "js.notebook.open",
+        "contents": "No open notebooks found. Try loading some from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
       }
     ],
     "commands": [

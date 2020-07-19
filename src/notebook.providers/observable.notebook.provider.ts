@@ -51,4 +51,37 @@ export class ObservableNotebookProvider implements INotebookProvider {
       );
     }
   }
+
+  /**
+   * Gets notebooks info.
+   * @param notebooksUrl Notebooks url with search query params.
+   * @param parseOptions Notebooks parse options.
+   * @param loadNotebook Load notebooks callback.
+   */
+  public async getNotebooks(
+    notebooksUrl: string, 
+    parseOptions: any, 
+    loadNotebooks: Function
+  ): Promise<void> {
+    try {
+      const notebookDocumentUrl: string = 
+        notebooksUrl.replace(config.observableSiteUrl, config.observableApiUrl) + '.js';
+      this.logger.debug('getNotebook(): documentUrl:', notebookDocumentUrl);
+      fetch(notebookDocumentUrl)
+        .then((response: any) => response.text())
+        .then((notebookJS: string) => {
+          this.logger.debug('notebookJS:', notebookJS);
+          loadNotebooks(notebookJS);
+        });
+    } catch (error) {
+      this.logger.logMessage(
+        LogLevel.Error,
+        `getNotebook(): Error parsing '${notebooksUrl}' \n\t Error:`,
+        error.message
+      );
+      window.showErrorMessage(
+        `Unable to load notebook: '${notebooksUrl}'. \n\t Error: ${error.message}`
+      );
+    }   
+  }
 }
