@@ -203,6 +203,9 @@ export class NotebookManager implements INotebookManager {
         // add a notebook to the favorites stored in global state
         let collectionNotebooks: Notebook[] = 
           notebookTreeDataProvider.context.globalState.get(notebookCollectionKey);
+        if (collectionNotebooks === undefined) {
+          collectionNotebooks = [];
+        }
         collectionNotebooks.push(notebook);
         notebookTreeDataProvider.context.globalState.update(notebookCollectionKey, collectionNotebooks);
         break;

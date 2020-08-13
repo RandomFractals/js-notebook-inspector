@@ -232,6 +232,10 @@ export class NotebookView {
             // loads notebook view
             this.refresh();
             break;
+          case 'toggleFavorite':
+            // update favorite collection
+            this.toggleFavorite(message.uri);
+            break;  
           case 'loadView':
             // launch new view
             this.loadView(message.viewName, message.uri);
@@ -383,6 +387,14 @@ export class NotebookView {
       this.webview.postMessage({ error: error });
     }
   } // end of refreshView()
+
+  /**
+   * Updates favorite collection.
+   * @param notebookUrl Notebook url to add/remove from favorite notebooks collection.
+   */
+  public async toggleFavorite(notebookUrl: string) {
+    notebookManager.addNotebook('favorite', this._notebook);
+  }
 
   /**
    * Saves notebook in requested file formats.
