@@ -90,6 +90,7 @@
       }
       .label {
         color: var(--vscode-editor-foreground);
+        text-decoration: none;        
       }
       select {
         color: var(--vscode-editor-foreground);
@@ -118,7 +119,10 @@
           style="color: orangered; font-weight: bold"
           onClick="buyCoffee()">☕️</a>
       </div>
-      <div id="toolbar-left">        
+      <div id="toolbar-left">
+        <a id="favorite-notebook-button" title="Favorite"
+          href="#" class="label"
+          onClick="toggleFavorite('{notebookUrl}')">⭐</a>
         <a id="title" title="View Notebook Source" 
           href="#"
           onClick="viewNotebookSource('{notebookUrl}')">
@@ -149,7 +153,9 @@
     <div id="notebook-view"></div>
     <!-- notebook view init script -->
     <script type="text/javascript">
-    let vscode, title, message, notebook,
+    let vscode, title,
+        message, notebook,
+        favoriteNotebookButton,
         notebookUrlInput, saveFileTypeSelector,
         notebookAuthor, notebookFileName, notebookUrl = '{notebookUrl}';
 
@@ -180,6 +186,7 @@
         // initialize notebook view page elements
         title = document.getElementById('title');
         message = document.getElementById('message');
+        favoriteNotebookButton = document.getElementById('favorite-notebook-button');
         notebookUrlInput = document.getElementById('notebook-url-input');
         saveFileTypeSelector = document.getElementById('save-file-type-selector');
         try {
@@ -226,6 +233,14 @@
 
       function initializeNotebook(keplerGl, store, config, data, dataType) {
         console.log(`initializeNotebook: loading ${notebookUrl} ...`);
+      }
+
+      // toggle favorite notebook setting
+      function toggleFavorite(notebookUrl) {
+        vscode.postMessage({
+          command: 'toggleFavorite',
+          uri: notebookUrl
+        });
       }
 
       // view notebook source
