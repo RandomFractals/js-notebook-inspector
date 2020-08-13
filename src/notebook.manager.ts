@@ -13,6 +13,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as config from './config';
 import { Notebook } from './notebook';
+import { NotebookTreeDataProvider } from './notebook.providers/notebook.tree.data.provider';
 import { ObservableNotebookProvider } from './notebook.providers/observable.notebook.provider';
 import { Logger } from './logger';
 
@@ -42,6 +43,20 @@ export interface INotebookManager {
   * @param loadNotebook Load notebooks callback.
   */
   getNotebooks(notebooksUrl: string, parseOptions: any, loadNotebooks: Function): void;
+
+  /**
+   * Added notebook tree data provider.
+   * @param viewId Notebook tree view id.
+   * @param notebookTreeDataProvider Notebook tree view provider instance.
+   */
+  registerNotebookTreeDataProvider(viewId: string, notebookTreeDataProvider: NotebookTreeDataProvider): void;
+
+  /**
+   * Adds a notebook to a notebook collection.
+   * @param notebookCollectionName Notebook collection name to add notebook to.
+   * @param notebook The notebook to add to notebooks collection.
+   */
+  addNotebook(notebookCollectionName: string, notebook: Notebook): void;
 
 }
 
@@ -81,6 +96,8 @@ export class NotebookManager implements INotebookManager {
   // singleton instance
   private static _instance: NotebookManager;
   private _notebookProviders: Map<string, INotebookProvider>;
+  private _notebookTreeDataProviders: Map<string, NotebookTreeDataProvider> =
+    new Map<string, NotebookTreeDataProvider>();
   private _logger: Logger = new Logger('notebook.manager:', config.logLevel);
 
   /**
@@ -162,6 +179,36 @@ export class NotebookManager implements INotebookManager {
     const notebookProvider: INotebookProvider = this.getNotebookProvider(notebooksUrl);
     notebookProvider.getNotebooks(notebooksUrl, parseOptions, loadNotebooks);
   }
+
+  /**
+   * Added notebook tree data provider.
+   * @param viewId Notebook tree view id/notebook collection name.
+   * @param notebookTreeDataProvider Notebook tree view provider instance.
+   */
+  public registerNotebookTreeDataProvider(viewId: string, notebookTreeDataProvider: NotebookTreeDataProvider): void {
+    window.registerTreeDataProvider(viewId, notebookTreeDataProvider);
+    this._notebookTreeDataProviders.set(viewId, notebookTreeDataProvider);
+  }
+
+  /**
+   * Adds a notebook to a notebook collection.
+   * @param notebookCollectionName Notebook collection name to add notebook to.
+   * @param notebook The notebook to add to notebooks collection.
+   */
+  public addNotebook(notebookCollectionName: string, notebook: Notebook): void {
+    const notebookCollectionKey: string = `js.notebook.${notebookCollectionName.toLowerCase()}`;
+    const notebookTreeDataProvider = this._notebookTreeDataProviders.get(notebookCollectionKey);
+    switch (notebookCollectionKey) {
+      case 'js.notebook.favorite':
+        // add a notebook to the favorites stored in global state
+        let collectionNotebooks: Notebook[] = 
+          notebookTreeDataProvider.context.globalState.get(notebookCollectionKey);
+        collectionNotebooks.push(notebook);
+        notebookTreeDataProvider.context.globalState.update(notebookCollectionKey, collectionNotebooks);
+        break;
+    }
+  }
+
 }
 
 // export Notebook Manager singleton

@@ -2,6 +2,7 @@ import {
   Disposable,
   Event,
   EventEmitter,
+  ExtensionContext,
   FileType,
   TreeDataProvider,
   TreeItem,
@@ -23,14 +24,15 @@ import { Logger } from '../logger';
 export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
   
   private _logger: Logger = new Logger('notebook.tree.data.provider:', config.logLevel);
+  private _notebookCollectionKey: string = 'js.notebook.';
 
   /**
    * Creates new notebook tree data provider.
    * @param notebookCollectionName Notebook tree view collection name,
    * i.e. Open, Poplular, Favorite etc.
    */
-  constructor(private notebookCollectionName: string) {
-
+  constructor(public context: ExtensionContext, private notebookCollectionName: string) {
+    this._notebookCollectionKey += notebookCollectionName.toLowerCase();
   }
 
   /**
@@ -46,11 +48,18 @@ export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
    * @param notebook The notebook to get children for, or null for notebooks tree root.
    */
   async getChildren(notebook?: Notebook): Promise<Notebook[] | undefined> {
-    if (!notebook) { 
-      // TODO: show starred notebooks for the notebook collections root to start with
-      return undefined;
+    let collectionNotebooks: Notebook[] = [];
+    if (!notebook) {
+      switch (this._notebookCollectionKey) {
+        case 'js.notebook.favorite':
+          // get favorite notebooks for the notebook collections root to start with
+          collectionNotebooks = this.context.globalState.get<Notebook[]>(this._notebookCollectionKey);
+          break;
+      }      
     }
-    // TODO: get and return imported notebooks
-    return [];
+    else {
+      // TODO: get and return imported notebooks
+    }
+    return Promise.resolve(collectionNotebooks);
   }
 }

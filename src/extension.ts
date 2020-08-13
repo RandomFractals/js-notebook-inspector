@@ -34,12 +34,12 @@ export function activate(context: ExtensionContext) {
   logger.debug('activate(): activating from extPath:', extensionPath);
 
   // register notebook collections tree view data providers
-  window.registerTreeDataProvider('js.notebook.open',
-    new NotebookTreeDataProvider('Open'));
-  window.registerTreeDataProvider('js.notebook.popular',
-    new NotebookTreeDataProvider('Popular'));
-  window.registerTreeDataProvider('js.notebook.favorite',
-    new NotebookTreeDataProvider('Favorite'));
+  notebookManager.registerNotebookTreeDataProvider('js.notebook.open',
+    new NotebookTreeDataProvider(context, 'Open'));
+  notebookManager.registerNotebookTreeDataProvider('js.notebook.popular',
+    new NotebookTreeDataProvider(context, 'Popular'));
+  notebookManager.registerNotebookTreeDataProvider('js.notebook.favorite',
+    new NotebookTreeDataProvider(context, 'Favorite'));
   
   // initialize webview panel templates
   const templateManager: ITemplateManager = new TemplateManager(context.asAbsolutePath('web'));
