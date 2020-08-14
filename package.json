@@ -32,7 +32,9 @@
     "node": ">=10.2.0"
   },
   "categories": [
-    "Other"
+    "Data Science",
+    "Notebooks",
+    "Visualization"
   ],
   "activationEvents": [
     "onCommand:js.notebook.url",
