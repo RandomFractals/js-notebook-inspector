@@ -67,7 +67,8 @@
         },
         {
           "id": "js.notebook.favorite",
-          "name": "Favorite"
+          "name": "Favorite",
+          "visibility": "collapsed"
         }
       ]
     },
