@@ -8,7 +8,8 @@ import {
   TreeItem,
   TreeItemCollapsibleState,
   window,
-  workspace
+  workspace,
+  Uri
 } from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
@@ -40,6 +41,9 @@ export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
    * @param notebook Notebook tree item to add to the notebooks tree view.
    */
   getTreeItem(notebook: Notebook): TreeItem {
+    if (notebook) {
+      this.setIconPath(notebook);
+    }
     return notebook;
   }
 
@@ -60,6 +64,20 @@ export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
     else {
       // TODO: get and return imported notebooks
     }
+
+    // set notebook tree icon path
+    collectionNotebooks.forEach(notebook => this.setIconPath(notebook));
     return Promise.resolve(collectionNotebooks);
+  }
+
+  private setIconPath(notebook: Notebook): void {
+    notebook.iconPath = {
+      light: this.getIconPath(),
+      dark: this.getIconPath()
+    };
+  }
+
+  private getIconPath(): string {
+    return path.join(this.context.extensionPath, 'images/notebook.svg');
   }
 }
