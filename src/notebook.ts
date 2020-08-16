@@ -1,6 +1,6 @@
 import {
-  TreeItem,
-  TreeItemCollapsibleState,
+  TreeItem, 
+  TreeItemCollapsibleState
 } from 'vscode';
 import * as path from 'path';
 

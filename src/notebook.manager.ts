@@ -208,6 +208,9 @@ export class NotebookManager implements INotebookManager {
         }
         collectionNotebooks.push(notebook);
         notebookTreeDataProvider.context.globalState.update(notebookCollectionKey, collectionNotebooks);
+
+        // refresh top level tree nodes
+        notebookTreeDataProvider.refresh();
         break;
     }
   }

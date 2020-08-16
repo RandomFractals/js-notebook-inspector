@@ -26,6 +26,9 @@ export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
   
   private _logger: Logger = new Logger('notebook.tree.data.provider:', config.logLevel);
   private _notebookCollectionKey: string = 'js.notebook.';
+  private _onDidChangeTreeData: EventEmitter<Notebook | undefined> = 
+    new EventEmitter<Notebook | undefined>();
+  readonly onDidChangeTreeData: Event<Notebook | undefined> = this._onDidChangeTreeData.event;
 
   /**
    * Creates new notebook tree data provider.
@@ -34,6 +37,10 @@ export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
    */
   constructor(public context: ExtensionContext, private notebookCollectionName: string) {
     this._notebookCollectionKey += notebookCollectionName.toLowerCase();
+  }
+
+  refresh(notebook?: Notebook): void {
+    this._onDidChangeTreeData.fire(notebook);
   }
 
   /**
