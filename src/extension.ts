@@ -33,14 +33,20 @@ export function activate(context: ExtensionContext) {
   const extensionPath: string = context.extensionPath;
   logger.debug('activate(): activating from extPath:', extensionPath);
 
-  // register notebook collections tree view data providers
+  // register JS notebook collections tree view data providers
   notebookManager.registerNotebookTreeDataProvider('js.notebook.open',
     new NotebookTreeDataProvider(context, 'Open'));
   notebookManager.registerNotebookTreeDataProvider('js.notebook.popular',
     new NotebookTreeDataProvider(context, 'Popular'));
-  notebookManager.registerNotebookTreeDataProvider('js.notebook.favorite',
-    new NotebookTreeDataProvider(context, 'Favorite'));
+  const favoriteNotebooksProvider: NotebookTreeDataProvider = 
+    new NotebookTreeDataProvider(context, 'Favorite');
+  notebookManager.registerNotebookTreeDataProvider('js.notebook.favorite', favoriteNotebooksProvider);
   
+  // add JS notebooks treeview commands
+  commands.registerCommand('js.notebook.favorite.refresh', () => {
+    favoriteNotebooksProvider.refresh();
+  });
+
   // initialize webview panel templates
   const templateManager: ITemplateManager = new TemplateManager(context.asAbsolutePath('web'));
   const notebookViewTemplate: Template | undefined = templateManager.getTemplate('notebook.view.html');

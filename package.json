@@ -92,6 +92,15 @@
         "command": "js.notebook.url",
         "title": "View Notebook from URL",
         "category": "JS Notebook"
+      },
+      {
+        "command": "js.notebook.favorite.refresh",
+        "title": "Refresh Favorite Notebooks",
+        "category": "JS Notebook",
+        "icon": {
+          "light": "./images/refresh.svg",
+          "dark": "./images/refersh.svg"
+        }
       }
     ],
     "keybindings": [
