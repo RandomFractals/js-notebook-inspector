@@ -50,6 +50,18 @@ export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
   getTreeItem(notebook: Notebook): TreeItem {
     if (notebook) {
       this.setIconPath(notebook);
+      const notebookUri: Uri = Uri.parse(notebook.url);
+      return {
+        resourceUri: notebookUri,
+        iconPath: notebook.iconPath,
+        tooltip: notebook.url,
+        collapsibleState: TreeItemCollapsibleState.Collapsed,
+        command: {
+          command: 'js.notebook.view',
+          "arguments": [notebookUri],
+          "title": "View Notebook"
+        }
+      };
     }
     return notebook;
   }
@@ -73,7 +85,7 @@ export class NotebookTreeDataProvider implements TreeDataProvider<Notebook> {
     }
 
     // set notebook tree icon path
-    collectionNotebooks.forEach(notebook => this.setIconPath(notebook));
+    // collectionNotebooks.forEach(notebook => this.setIconPath(notebook));
     return Promise.resolve(collectionNotebooks);
   }
 
