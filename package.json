@@ -76,7 +76,7 @@
     "viewsWelcome": [
       {
         "view": "js.notebook.open",
-        "contents": "No open notebooks found. Try loading some from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
+        "contents": "Try loading JS notebooks from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
       },
       {
         "view": "js.notebook.popular",
