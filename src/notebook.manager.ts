@@ -200,14 +200,19 @@ export class NotebookManager implements INotebookManager {
     const notebookTreeDataProvider = this._notebookTreeDataProviders.get(notebookCollectionKey);
     switch (notebookCollectionKey) {
       case 'js.notebook.favorite':
-        // add a notebook to the favorites stored in global state
+        // get favorite notebooks stored in global state
         let collectionNotebooks: Notebook[] = 
           notebookTreeDataProvider.context.globalState.get(notebookCollectionKey);
         if (collectionNotebooks === undefined) {
+          // create new favorite notebooks collection
           collectionNotebooks = [];
         }
-        collectionNotebooks.push(notebook);
-        notebookTreeDataProvider.context.globalState.update(notebookCollectionKey, collectionNotebooks);
+        if (collectionNotebooks.findIndex((favoriteNotebook: Notebook) => 
+          favoriteNotebook.url === notebook.url) < 0) {
+          // add notebook to favorites in global state for all workspaces
+          collectionNotebooks.push(notebook);
+          notebookTreeDataProvider.context.globalState.update(notebookCollectionKey, collectionNotebooks);  
+        }
 
         // refresh top level tree nodes
         notebookTreeDataProvider.refresh();
