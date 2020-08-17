@@ -112,7 +112,16 @@
         "command": "js.notebook.url",
         "key": "ctrl+alt+o"
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "js.notebook.favorite.refresh",
+          "when": "view == js.notebook.favorite",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
