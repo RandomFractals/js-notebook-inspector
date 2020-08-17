@@ -63,7 +63,8 @@
         },
         {
           "id": "js.notebook.popular",
-          "name": "Popular"
+          "name": "Popular",
+          "visibility": "collapsed"
         },
         {
           "id": "js.notebook.favorite",
@@ -76,6 +77,10 @@
       {
         "view": "js.notebook.open",
         "contents": "No open notebooks found. Try loading some from [ObservableHQ](https://observablehq.com/explore)\n[Add Notebook 📓](command:js.notebook.url)"
+      },
+      {
+        "view": "js.notebook.popular",
+        "contents": "Popular notebooks display with be added soon. Meanwhile, you can view them in [browser](https://observablehq.com/trending)"
       }
     ],
     "commands": [
