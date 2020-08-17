@@ -3,6 +3,21 @@
 See [releases](https://github.com/RandomFractals/js-notebook-inspector/releases)
 for the brief versions information and feature details with screen pics for this [JS Notebook 📓 Inspector 🕵️](https://marketplace.visualstudio.com/items?itemName=RandomFractalsInc.js-notebook-inspector) VSCode extension.
 
+## v1.5.0 [2020-08-16]
+
+- [#37](https://github.com/RandomFractals/js-notebook-inspector/issues/37)
+Add favorite notebooks tree view collection display and toggle in notebook webview
+- [#38](https://github.com/RandomFractals/js-notebook-inspector/issues/38)
+Update extension dev dependencies to vscode v1.48
+- [#39](https://github.com/RandomFractals/js-notebook-inspector/issues/39)
+Update superagent library to v6.0.0 for remote data fetching
+- [#40](https://github.com/RandomFractals/js-notebook-inspector/issues/40)
+Add Data Science, Notebooks, Visualization categories for this extension
+- [#41](https://github.com/RandomFractals/js-notebook-inspector/issues/41)
+Update observable js parser and runtime to latest v4.x verisons
+- [#42](https://github.com/RandomFractals/js-notebook-inspector/issues/42)
+Set custom notebook icon for the notebook tree nodes display
+
 ## v1.4.0 [2020-05-22]
 
 - [#7](https://github.com/RandomFractals/js-notebook-inspector/issues/7)
