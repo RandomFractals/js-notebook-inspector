@@ -80,7 +80,7 @@
       },
       {
         "view": "js.notebook.popular",
-        "contents": "Popular notebooks display with be added soon. Meanwhile, you can view them in [browser](https://observablehq.com/trending)"
+        "contents": "Popular notebooks display will be added soon. Meanwhile, you can view them in [browser](https://observablehq.com/trending)"
       }
     ],
     "commands": [
