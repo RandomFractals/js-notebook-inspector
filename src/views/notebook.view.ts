@@ -365,7 +365,7 @@ export class NotebookView {
         // this.refreshView();
       });
     } else {
-      // delegate to refresh view for loading binary shapefiles
+      // delegate to refresh view for loading notebook
       this.refreshView(this._notebook);
     }
   }

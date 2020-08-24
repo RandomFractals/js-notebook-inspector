@@ -192,7 +192,7 @@
         try {
           // notify webview
           vscode.postMessage({command: 'refresh'});
-          console.log('loading data ...');
+          console.log('loading notebook: {notebookUrl} ...');
         } catch (error) {
           // ignore: must be loaded outside of vscode webview
         }
@@ -215,24 +215,24 @@
             notebookUrl = event.data.uri;
             notebook = event.data.notebook;
             // console.log(JSON.stringify(notebook));
-            view(notebookUrl);
+            view(notebook);
           break;
         }
       });
 
       // notebook view update
-      function view(notebookUrl) {
+      function view(notebook) {
         try {
           // load notebook
-          initializeNotebook(notebookUrl);
+          initializeNotebook(notebook);
         } catch (error) {
           console.error(`js.notebook.view:error: ${error}`);
           showMessage(error.message);
         }
       }
 
-      function initializeNotebook(keplerGl, store, config, data, dataType) {
-        console.log(`initializeNotebook: loading ${notebookUrl} ...`);
+      function initializeNotebook(notebook) {
+        console.log(`initializeNotebook: loading {notebookUrl} ...`);
       }
 
       // toggle favorite notebook setting
