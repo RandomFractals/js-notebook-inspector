@@ -355,7 +355,7 @@ export class NotebookView {
         (notebookJS: string) => {
           this._content = notebookJS;
           this._notebook.source = notebookJS;
-          this.refreshView(this._notebook.module);
+          this.refreshView(this._notebook); // .module
         });
     } else if (dataEncoding === 'utf8') {
       // open local text document

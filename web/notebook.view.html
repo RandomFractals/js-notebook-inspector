@@ -152,12 +152,19 @@
     <div id="message"></div>
     <div id="notebook-view"></div>
     <!-- notebook view init script -->
-    <script type="text/javascript">
-    let vscode, title,
-        message, notebook,
+    <script async type="module">
+    import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+    let vscode, 
+        title,
+        message, 
+        notebook,
         favoriteNotebookButton,
-        notebookUrlInput, saveFileTypeSelector,
-        notebookAuthor, notebookFileName, notebookUrl = '{notebookUrl}';
+        notebookUrlInput, 
+        saveFileTypeSelector,
+        notebookAuthor, 
+        notebookFileName, 
+        notebookUrl = '{notebookUrl}',
+        notebookView;
 
       // initialize vs code api for messaging
       vscode = acquireVsCodeApi();
@@ -189,6 +196,7 @@
         favoriteNotebookButton = document.getElementById('favorite-notebook-button');
         notebookUrlInput = document.getElementById('notebook-url-input');
         saveFileTypeSelector = document.getElementById('save-file-type-selector');
+        notebookView = document.getElementById('notebook-view');
         try {
           // notify webview
           vscode.postMessage({command: 'refresh'});
@@ -214,7 +222,6 @@
             notebookAuthor = event.data.author;
             notebookUrl = event.data.uri;
             notebook = event.data.notebook;
-            // console.log(JSON.stringify(notebook));
             view(notebook);
           break;
         }
@@ -223,18 +230,26 @@
       // notebook view update
       function view(notebook) {
         try {
-          // load notebook
-          initializeNotebook(notebook);
+          loadNotebook(notebook);
         } catch (error) {
           console.error(`js.notebook.view:error: ${error}`);
           showMessage(error.message);
         }
       }
 
-      function initializeNotebook(notebook) {
-        console.log(`initializeNotebook: loading {notebookUrl} ...`);
+      function loadNotebook(notebook) {
+        // clearNotebookView();
+        console.log(`loading ${notebook.url} ...`);
+        // console.log(JSON.stringify(notebook.document.nodes));
+        // TODO: reload notebook view with cell code toggles here
       }
 
+      function clearNotebookView() {
+        while (notebookView.firstChild) {
+          notebookView.removeChild(notebookView.firstChild);
+        }
+      }
+      
       // toggle favorite notebook setting
       function toggleFavorite(notebookUrl) {
         vscode.postMessage({
@@ -297,7 +312,6 @@
       function showMessage(text) {
         message.innerText = text;
       }
-      
     </script>
     <script type="module">
       import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
