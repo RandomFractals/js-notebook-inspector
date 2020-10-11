@@ -1,0 +1,277 @@
+// @see https://observablehq.com/@randomfractals/deck-gl-heatmap
+
+md`# Chicago Crimes Heatmap
+
+[deck.gl HexagonLayer](https://deck.gl/docs/api-reference/aggregation-layers/hexagon-layer) 
+heatmap of reported 2018 Chicago crimes in ${endDay - startDay} days.
+
+*tip: toggle crimeType, startDay/endDay:*
+`
+
+viewof crimeType = select(['', 'HOMICIDE', 'KIDNAPPING', 'NARCOTICS', 'PROSTITUTION', 'ARSON', 
+                          'THEFT', 'BATTERY', 'CRIMINAL DAMAGE', 'ASSAULT', 'SEX OFFENSE',
+                          'OTHER OFFENSE', 'DECEPTIVE PRACTICE',
+                          'BURGLARY', 'MOTOR VEHICLE THEFT', 'ROBBERY',
+                          'CRIMINAL TRESPASS', 'WEAPONS VIOLATION',
+                          'OFFENSE INVOLVING CHILDREN',
+                          'PUBLIC PEACE VIOLATION',
+                          'CRIM SEXUAL ASSAULT',
+                          'INTERFERENCE WITH PUBLIC OFFICER',
+                          'LIQUOR LAW VIOLATION', 'STALKING', 'GAMBLING'])
+
+viewof startDay = slider({min: 0, max: days, step: 1, value: 0})
+
+viewof endDay = slider({min: 0, max: days, step: 1, value: days})
+
+mapContainer = html `<div style="height:${width*.6}px">
+  <div class="data-panel">
+    <b><i>${crimeType}</i></b>
+    <i>total:</i> <b>${data.length.toLocaleString()}</b>
+    <br />
+    <b>${formatTime(dayToDate(startDay))}</b> <i>through</i> <b>${formatTime(dayToDate(endDay))}, 2018</b>
+    <br />
+    <div class="data-list"></div>
+  </div>
+  <div id="tooltip"></div>
+</div>`
+
+dataUrl = 'https://raw.githubusercontent.com/RandomFractals/ChicagoCrimes/master/data/2018/chicago-crimes-2018.arrow'
+
+md `## Hexagon Layer Toggles`
+
+viewof blockRadius = slider({min: 100, max: 1000, step: 100, value: 200})
+
+viewof upperPercentile = slider({min: 90, max: 100, step: 1, value: 95})
+
+viewof hexagonCoverage = slider({min: .2, max: 1, step: .1, value: .6})
+
+viewof mapPitch = slider({min: 0, max: 45, step: .1, value: 30})
+
+md `## DeckGL Map Setup`
+
+deckgl = {
+  return new deck.DeckGL({
+    container: mapContainer,
+    map: mapboxgl,
+    mapboxAccessToken: 'pk.eyJ1IjoiZGF0YXBpeHkiLCJhIjoiY2tnM3ZhZWJjMDE1ajJxbGY1eTNlemduciJ9.YZ9CJEza0hvAQmTRBhubmQ',
+    mapStyle: 'https://api.maptiler.com/maps/toner/style.json?key=bMizIsuAeRiZikCLHO9q',
+    latitude: 41.85,    
+    longitude: -87.68,
+    zoom: 9,
+    minZoom: 8,
+    maxZoom: 15,
+    pitch: mapPitch
+  });
+}
+
+heatmap = {
+  const hexagonLayer = new deck.HexagonLayer({
+    id: 'heatmap',
+    colorRange,
+    data,
+    elevationRange: [0, 1000],
+    elevationScale: 20,
+    extruded: true,
+    getPosition: d => [d.lng, d.lat],
+    opacity: .2,
+    radius: blockRadius,
+    coverage: hexagonCoverage,
+    upperPercentile,
+    lightSettings,
+    pickable: true,
+    autoHighlight: true,
+    onHover: onHover,
+    onClick: onClick
+  });
+  deckgl.setProps({layers: [hexagonLayer]});
+  return hexagonLayer;
+}
+
+tooltip = mapContainer.querySelector('#tooltip')
+
+function onHover (info) {
+  const {x, y, object} = info;
+  if (object) {
+    tooltip.style.left = `${x}px`;    
+    tooltip.style.top = `${y}px`;
+    tooltip.innerHTML = `${object.points.length} crime reports`;
+  } else { 
+    tooltip.innerHTML = '';
+  }
+}
+
+dataList = mapContainer.querySelector('.data-list')
+
+function onClick(info) {
+  const mapPoints = info.object.points;
+  const dataPoints = getDataPoints(mapPoints);
+  dataList.innerHTML = dataPoints.reduce(
+    (html, d) => html + 
+    `<hr>${d.block}<br />(${d.location})<br />${d.type}: ${d.info}<br />${d.date.toLocaleString()}`, ''
+  );
+  //console.log('clicked data points:', dataPoints);  
+}
+
+colorRange = {
+  return [
+    [1, 152, 189],
+    [73, 227, 206],
+    [216, 254, 181],
+    [254, 237, 177],
+    [254, 173, 84],
+    [209, 55, 78]
+  ];
+}
+
+lightSettings = {
+  return {
+    lightsPosition: [-0.144528, 49.739968, 8000, -3.807751, 54.104682, 8000],
+    ambientRatio: 0.4,
+    diffuseRatio: 0.6,
+    specularRatio: 0.2,
+    lightsStrength: [0.8, 0.0, 0.8, 0.0],
+    numberOfLights: 2
+  };
+}
+
+tooltipStyle = html `
+<style>
+#tooltip:empty {
+  display: none;
+}
+#tooltip {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  position: absolute;
+  padding: 4px;
+  margin: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  max-width: 300px;
+  font-size: 10px;
+  z-index: 9;
+  pointer-events: none;
+}
+</style>
+`
+
+dataPanelStyle = html `
+<style type="text/css">
+.data-panel {
+  position: absolute;
+  top: 0;
+  font-family: Nunito, sans-serif;
+  font-size: 12px;
+  background-color: #f6f6f6;
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 1px 2px 4px #888;
+  z-index: 10;
+}
+.data-list {
+  max-height: ${width*.6 - 100}px;
+  width: 180px;
+  overflow: auto;
+}
+</style>
+`
+
+md `## Data`
+
+dataTable = loadData(dataUrl).then(buffer => arrow.Table.from(new Uint8Array(buffer)))
+
+data = filterData(dataTable, crimeType, 
+                  new Date(startDate.getTime() + startDay*millisPerDay),
+                  new Date(startDate.getTime() + endDay*millisPerDay))
+
+startDate = new Date('1/1/2018')
+
+endDate = new Date('8/8/2018')
+
+days = Math.ceil((endDate - startDate) / millisPerDay)
+
+millisPerDay = 24 * 60 * 60 * 1000
+
+function dayToDate(day) {
+ return new Date(startDate.getTime() + day*millisPerDay) 
+}
+
+dayToDate(1)
+
+formatTime = d3.timeFormat('%b %e')
+
+fields = dataTable.schema.fields.map(f => f.name)
+
+function filterData(data, crimeType, startDate, endDate) {
+  let lat, lng, block, type, info, date, results = [];
+  const dataFilter = arrow.predicate.custom(i => {
+    const date = toDate(data.getColumn('Date').get(i));
+    const primaryType = data.getColumn('PrimaryType').get(i);
+    return date >= startDate && date <= endDate && 
+      (crimeType === '' || primaryType === crimeType);
+  }, b => 1);
+  data.filter(dataFilter)   
+    .scan((index) => {
+      results.push({
+        'lat': lat(index),
+        'lng': lng(index),
+        index
+        //'info': `${block(index)}<br />${type(index)}<br />${info(index)}<br />${toDate(date(index)).toLocaleString()}`
+      });
+    }, (batch) => {
+      lat = arrow.predicate.col('Latitude').bind(batch);
+      lng = arrow.predicate.col('Longitude').bind(batch);
+      //block = arrow.predicate.col('Block').bind(batch);
+      //type = arrow.predicate.col('PrimaryType').bind(batch);
+      //info = arrow.predicate.col('Description').bind(batch);    
+      //date = arrow.predicate.col('Date').bind(batch);    
+    }
+  );
+  return results;
+}
+
+function getDataPoints(mapPoints) {
+  const dataPoints = [];
+  mapPoints.map(point => {
+    const dataRow = dataTable.get(point.index);
+    const dataPoint = {
+      // from fields
+      block: dataRow.get(2),
+      location: dataRow.get(3).toLowerCase(),
+      type: dataRow.get(4),
+      info: dataRow.get(5).toLowerCase(),
+      arrested: dataRow.get(6),
+      domestic: dataRow.get(7),
+      date: toDate(dataRow.get(9))
+    }
+    dataPoints.push(dataPoint);
+  });
+  return dataPoints;
+}
+
+md `## Data Preview`
+
+every10KRecord = range(dataTable, 0, dataTable.count(), 10000)
+
+md`${getMarkdown(every10KRecord, fields)}`
+
+md `## Imports`
+
+html `<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+mapbox-gl.css`
+
+mapboxgl = require('mapbox-gl@~0.44.1/dist/mapbox-gl.js')
+
+deck = require('deck.gl@~5.2.0/deckgl.min.js')
+
+d3 = require('d3')
+
+import {slider, select} from '@jashkenas/inputs'
+
+arrow = require('apache-arrow@0.3.1')
+
+import {loadData, range, getMarkdown, toDate} from '@randomfractals/apache-arrow'
+
+md `## P.S.:
+see my [Intro to Using Apache Arrow JS with Large Datasets](https://beta.observablehq.com/@randomfractals/apache-arrow)
+on how to work with apache arrow data used in this notebook.`
