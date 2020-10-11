@@ -1,0 +1,332 @@
+{
+  "id": "3b81b175f29201e7",
+  "slug": "deck-gl-heatmap",
+  "trashed": false,
+  "likes": 7,
+  "publish_level": "public",
+  "forks": 0,
+  "fork_of": null,
+  "update_time": "2020-10-11T20:41:45.239Z",
+  "publish_time": "2018-07-23T12:19:32.149Z",
+  "publish_version": 356,
+  "thumbnail": "38c7f53b846da4e440f0c8bb1266c6f744884a3b6f4c56601d8bc7ee040492a7",
+  "roles": [],
+  "sharing": null,
+  "owner": {
+    "id": "17b72db66175b428",
+    "github_login": "RandomFractals",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/656833?v=4",
+    "login": "randomfractals",
+    "name": "Taras Novak",
+    "bio": "I map and graph data",
+    "home_url": "https://www.linkedin.com/in/tarasnovak",
+    "type": "individual"
+  },
+  "creator": {
+    "id": "17b72db66175b428",
+    "github_login": "RandomFractals",
+    "avatar_url": "https://avatars1.githubusercontent.com/u/656833?v=4",
+    "login": "randomfractals",
+    "name": "Taras Novak",
+    "bio": "I map and graph data",
+    "home_url": "https://www.linkedin.com/in/tarasnovak"
+  },
+  "collections": [
+    {
+      "id": "cc3985e6b82c86b0",
+      "type": "public",
+      "slug": "maps",
+      "title": "Maps",
+      "description": "Various Maps",
+      "update_time": "2018-09-28T13:20:05.815Z",
+      "pinned": false,
+      "ordered": false,
+      "custom_thumbnail": null,
+      "thumbnail": "6302830ecc9f9793cec679ab31a6d5f2e5e36158ae112cdf0583a2d3b4be0cc6",
+      "listing_count": 8,
+      "document_count": 8,
+      "collection_count": 0,
+      "parent_collection_count": 0,
+      "owner": {
+        "id": "17b72db66175b428",
+        "github_login": "RandomFractals",
+        "avatar_url": "https://avatars1.githubusercontent.com/u/656833?v=4",
+        "login": "randomfractals",
+        "name": "Taras Novak",
+        "bio": "I map and graph data",
+        "home_url": "https://www.linkedin.com/in/tarasnovak",
+        "type": "individual"
+      }
+    },
+    {
+      "id": "08aa2e504097ac5b",
+      "type": "public",
+      "slug": "chicago-crimes",
+      "title": "Chicago Crimes",
+      "description": "2018 Chicago Crimes EDA",
+      "update_time": "2018-09-13T12:53:23.549Z",
+      "pinned": true,
+      "ordered": false,
+      "custom_thumbnail": null,
+      "thumbnail": "4268e3079a8020ccecc19db58766bc34aefcf28a8cbbc850a2d38e044be7ce3a",
+      "listing_count": 16,
+      "document_count": 16,
+      "collection_count": 0,
+      "parent_collection_count": 0,
+      "owner": {
+        "id": "17b72db66175b428",
+        "github_login": "RandomFractals",
+        "avatar_url": "https://avatars1.githubusercontent.com/u/656833?v=4",
+        "login": "randomfractals",
+        "name": "Taras Novak",
+        "bio": "I map and graph data",
+        "home_url": "https://www.linkedin.com/in/tarasnovak",
+        "type": "individual"
+      }
+    }
+  ],
+  "files": [],
+  "comments": [],
+  "commenting_lock": null,
+  "version": 356,
+  "title": "Chicago Crimes Heatmap",
+  "license": null,
+  "copyright": "",
+  "nodes": [
+    {
+      "id": 0,
+      "value": "md`# Chicago Crimes Heatmap\n\n[deck.gl HexagonLayer](https://deck.gl/docs/api-reference/aggregation-layers/hexagon-layer) \nheatmap of reported 2018 Chicago crimes in ${endDay - startDay} days.\n\n*tip: toggle crimeType, startDay/endDay:*\n`",
+      "pinned": false
+    },
+    {
+      "id": 204,
+      "value": "viewof crimeType = select(['', 'HOMICIDE', 'KIDNAPPING', 'NARCOTICS', 'PROSTITUTION', 'ARSON', \n                          'THEFT', 'BATTERY', 'CRIMINAL DAMAGE', 'ASSAULT', 'SEX OFFENSE',\n                          'OTHER OFFENSE', 'DECEPTIVE PRACTICE',\n                          'BURGLARY', 'MOTOR VEHICLE THEFT', 'ROBBERY',\n                          'CRIMINAL TRESPASS', 'WEAPONS VIOLATION',\n                          'OFFENSE INVOLVING CHILDREN',\n                          'PUBLIC PEACE VIOLATION',\n                          'CRIM SEXUAL ASSAULT',\n                          'INTERFERENCE WITH PUBLIC OFFICER',\n                          'LIQUOR LAW VIOLATION', 'STALKING', 'GAMBLING'])",
+      "pinned": false
+    },
+    {
+      "id": 245,
+      "value": "viewof startDay = slider({min: 0, max: days, step: 1, value: 0})",
+      "pinned": false
+    },
+    {
+      "id": 248,
+      "value": "viewof endDay = slider({min: 0, max: days, step: 1, value: days})",
+      "pinned": false
+    },
+    {
+      "id": 51,
+      "value": "mapContainer = html `<div style=\"height:${width*.6}px\">\n  <div class=\"data-panel\">\n    <b><i>${crimeType}</i></b>\n    <i>total:</i> <b>${data.length.toLocaleString()}</b>\n    <br />\n    <b>${formatTime(dayToDate(startDay))}</b> <i>through</i> <b>${formatTime(dayToDate(endDay))}, 2018</b>\n    <br />\n    <div class=\"data-list\"></div>\n  </div>\n  <div id=\"tooltip\"></div>\n</div>`",
+      "pinned": false
+    },
+    {
+      "id": 58,
+      "value": "dataUrl = 'https://raw.githubusercontent.com/RandomFractals/ChicagoCrimes/master/data/2018/chicago-crimes-2018.arrow'",
+      "pinned": false
+    },
+    {
+      "id": 227,
+      "value": "md `## Hexagon Layer Toggles`",
+      "pinned": false
+    },
+    {
+      "id": 38,
+      "value": "viewof blockRadius = slider({min: 100, max: 1000, step: 100, value: 200})",
+      "pinned": false
+    },
+    {
+      "id": 45,
+      "value": "viewof upperPercentile = slider({min: 90, max: 100, step: 1, value: 95})",
+      "pinned": false
+    },
+    {
+      "id": 218,
+      "value": "viewof hexagonCoverage = slider({min: .2, max: 1, step: .1, value: .6})",
+      "pinned": false
+    },
+    {
+      "id": 306,
+      "value": "viewof mapPitch = slider({min: 0, max: 45, step: .1, value: 30})",
+      "pinned": false
+    },
+    {
+      "id": 147,
+      "value": "md `## DeckGL Map Setup`",
+      "pinned": false
+    },
+    {
+      "id": 29,
+      "value": "deckgl = {\n  return new deck.DeckGL({\n    container: mapContainer,\n    map: mapboxgl,\n    mapboxAccessToken: 'pk.eyJ1IjoiZGF0YXBpeHkiLCJhIjoiY2tnM3ZhZWJjMDE1ajJxbGY1eTNlemduciJ9.YZ9CJEza0hvAQmTRBhubmQ',\n    mapStyle: 'https://api.maptiler.com/maps/toner/style.json?key=bMizIsuAeRiZikCLHO9q',\n    latitude: 41.85,    \n    longitude: -87.68,\n    zoom: 9,\n    minZoom: 8,\n    maxZoom: 15,\n    pitch: mapPitch\n  });\n}",
+      "pinned": true
+    },
+    {
+      "id": 26,
+      "value": "heatmap = {\n  const hexagonLayer = new deck.HexagonLayer({\n    id: 'heatmap',\n    colorRange,\n    data,\n    elevationRange: [0, 1000],\n    elevationScale: 20,\n    extruded: true,\n    getPosition: d => [d.lng, d.lat],\n    opacity: .2,\n    radius: blockRadius,\n    coverage: hexagonCoverage,\n    upperPercentile,\n    lightSettings,\n    pickable: true,\n    autoHighlight: true,\n    onHover: onHover,\n    onClick: onClick\n  });\n  deckgl.setProps({layers: [hexagonLayer]});\n  return hexagonLayer;\n}",
+      "pinned": true
+    },
+    {
+      "id": 194,
+      "value": "tooltip = mapContainer.querySelector('#tooltip')",
+      "pinned": true
+    },
+    {
+      "id": 191,
+      "value": "function onHover (info) {\n  const {x, y, object} = info;\n  if (object) {\n    tooltip.style.left = `${x}px`;    \n    tooltip.style.top = `${y}px`;\n    tooltip.innerHTML = `${object.points.length} crime reports`;\n  } else { \n    tooltip.innerHTML = '';\n  }\n}",
+      "pinned": true
+    },
+    {
+      "id": 347,
+      "value": "dataList = mapContainer.querySelector('.data-list')",
+      "pinned": true
+    },
+    {
+      "id": 321,
+      "value": "function onClick(info) {\n  const mapPoints = info.object.points;\n  const dataPoints = getDataPoints(mapPoints);\n  dataList.innerHTML = dataPoints.reduce(\n    (html, d) => html + \n    `<hr>${d.block}<br />(${d.location})<br />${d.type}: ${d.info}<br />${d.date.toLocaleString()}`, ''\n  );\n  //console.log('clicked data points:', dataPoints);  \n}",
+      "pinned": true
+    },
+    {
+      "id": 150,
+      "value": "colorRange = {\n  return [\n    [1, 152, 189],\n    [73, 227, 206],\n    [216, 254, 181],\n    [254, 237, 177],\n    [254, 173, 84],\n    [209, 55, 78]\n  ];\n}",
+      "pinned": false
+    },
+    {
+      "id": 154,
+      "value": "lightSettings = {\n  return {\n    lightsPosition: [-0.144528, 49.739968, 8000, -3.807751, 54.104682, 8000],\n    ambientRatio: 0.4,\n    diffuseRatio: 0.6,\n    specularRatio: 0.2,\n    lightsStrength: [0.8, 0.0, 0.8, 0.0],\n    numberOfLights: 2\n  };\n}",
+      "pinned": false
+    },
+    {
+      "id": 230,
+      "value": "tooltipStyle = html `\n<style>\n#tooltip:empty {\n  display: none;\n}\n#tooltip {\n  font-family: Helvetica, Arial, sans-serif;\n  font-size: 11px;\n  position: absolute;\n  padding: 4px;\n  margin: 8px;\n  background: rgba(0, 0, 0, 0.8);\n  color: #fff;\n  max-width: 300px;\n  font-size: 10px;\n  z-index: 9;\n  pointer-events: none;\n}\n</style>\n`",
+      "pinned": false
+    },
+    {
+      "id": 330,
+      "value": "dataPanelStyle = html `\n<style type=\"text/css\">\n.data-panel {\n  position: absolute;\n  top: 0;\n  font-family: Nunito, sans-serif;\n  font-size: 12px;\n  background-color: #f6f6f6;\n  padding: 10px;\n  border-radius: 3px;\n  box-shadow: 1px 2px 4px #888;\n  z-index: 10;\n}\n.data-list {\n  max-height: ${width*.6 - 100}px;\n  width: 180px;\n  overflow: auto;\n}\n</style>\n`",
+      "pinned": false
+    },
+    {
+      "id": 145,
+      "value": "md `## Data`",
+      "pinned": false
+    },
+    {
+      "id": 137,
+      "value": "dataTable = loadData(dataUrl).then(buffer => arrow.Table.from(new Uint8Array(buffer)))",
+      "pinned": true
+    },
+    {
+      "id": 90,
+      "value": "data = filterData(dataTable, crimeType, \n                  new Date(startDate.getTime() + startDay*millisPerDay),\n                  new Date(startDate.getTime() + endDay*millisPerDay))",
+      "pinned": true
+    },
+    {
+      "id": 92,
+      "value": "startDate = new Date('1/1/2018')",
+      "pinned": false
+    },
+    {
+      "id": 94,
+      "value": "endDate = new Date('8/8/2018')",
+      "pinned": false
+    },
+    {
+      "id": 252,
+      "value": "days = Math.ceil((endDate - startDate) / millisPerDay)",
+      "pinned": false
+    },
+    {
+      "id": 250,
+      "value": "millisPerDay = 24 * 60 * 60 * 1000",
+      "pinned": false
+    },
+    {
+      "id": 265,
+      "value": "function dayToDate(day) {\n return new Date(startDate.getTime() + day*millisPerDay) \n}",
+      "pinned": true
+    },
+    {
+      "id": 269,
+      "value": "dayToDate(1)",
+      "pinned": true
+    },
+    {
+      "id": 335,
+      "value": "formatTime = d3.timeFormat('%b %e')",
+      "pinned": false
+    },
+    {
+      "id": 140,
+      "value": "fields = dataTable.schema.fields.map(f => f.name)",
+      "pinned": true
+    },
+    {
+      "id": 86,
+      "value": "function filterData(data, crimeType, startDate, endDate) {\n  let lat, lng, block, type, info, date, results = [];\n  const dataFilter = arrow.predicate.custom(i => {\n    const date = toDate(data.getColumn('Date').get(i));\n    const primaryType = data.getColumn('PrimaryType').get(i);\n    return date >= startDate && date <= endDate && \n      (crimeType === '' || primaryType === crimeType);\n  }, b => 1);\n  data.filter(dataFilter)   \n    .scan((index) => {\n      results.push({\n        'lat': lat(index),\n        'lng': lng(index),\n        index\n        //'info': `${block(index)}<br />${type(index)}<br />${info(index)}<br />${toDate(date(index)).toLocaleString()}`\n      });\n    }, (batch) => {\n      lat = arrow.predicate.col('Latitude').bind(batch);\n      lng = arrow.predicate.col('Longitude').bind(batch);\n      //block = arrow.predicate.col('Block').bind(batch);\n      //type = arrow.predicate.col('PrimaryType').bind(batch);\n      //info = arrow.predicate.col('Description').bind(batch);    \n      //date = arrow.predicate.col('Date').bind(batch);    \n    }\n  );\n  return results;\n}",
+      "pinned": true
+    },
+    {
+      "id": 327,
+      "value": "function getDataPoints(mapPoints) {\n  const dataPoints = [];\n  mapPoints.map(point => {\n    const dataRow = dataTable.get(point.index);\n    const dataPoint = {\n      // from fields\n      block: dataRow.get(2),\n      location: dataRow.get(3).toLowerCase(),\n      type: dataRow.get(4),\n      info: dataRow.get(5).toLowerCase(),\n      arrested: dataRow.get(6),\n      domestic: dataRow.get(7),\n      date: toDate(dataRow.get(9))\n    }\n    dataPoints.push(dataPoint);\n  });\n  return dataPoints;\n}",
+      "pinned": true
+    },
+    {
+      "id": 290,
+      "value": "md `## Data Preview`",
+      "pinned": false
+    },
+    {
+      "id": 292,
+      "value": "every10KRecord = range(dataTable, 0, dataTable.count(), 10000)",
+      "pinned": false
+    },
+    {
+      "id": 294,
+      "value": "md`${getMarkdown(every10KRecord, fields)}`",
+      "pinned": false
+    },
+    {
+      "id": 14,
+      "value": "md `## Imports`",
+      "pinned": false
+    },
+    {
+      "id": 8,
+      "value": "html `<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />\nmapbox-gl.css`",
+      "pinned": true
+    },
+    {
+      "id": 10,
+      "value": "mapboxgl = require('mapbox-gl@~0.44.1/dist/mapbox-gl.js')",
+      "pinned": true
+    },
+    {
+      "id": 12,
+      "value": "deck = require('deck.gl@~5.2.0/deckgl.min.js')",
+      "pinned": true
+    },
+    {
+      "id": 6,
+      "value": "d3 = require('d3')",
+      "pinned": true
+    },
+    {
+      "id": 282,
+      "value": "import {slider, select} from '@jashkenas/inputs'",
+      "pinned": true
+    },
+    {
+      "id": 60,
+      "value": "arrow = require('apache-arrow@0.3.1')",
+      "pinned": true
+    },
+    {
+      "id": 70,
+      "value": "import {loadData, range, getMarkdown, toDate} from '@randomfractals/apache-arrow'",
+      "pinned": true
+    },
+    {
+      "id": 280,
+      "value": "md `## P.S.:\nsee my [Intro to Using Apache Arrow JS with Large Datasets](https://beta.observablehq.com/@randomfractals/apache-arrow)\non how to work with apache arrow data used in this notebook.`",
+      "pinned": false
+    }
+  ]
+}
