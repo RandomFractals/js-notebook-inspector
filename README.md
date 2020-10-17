@@ -32,10 +32,15 @@ for adding to web sites || viewing locally in a browser 🌐
 ![Favorite ⭐ Notebooks 📚 Tree View ⚼](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-favorite-tree-view.png?raw=true 
  "Notebook 📓 JSON View")
 
-### Interactive [DeckGL Heatmap 🗺️ Demo Notebook 📓](https://github.com/RandomFractals/js-notebook-inspector/tree/master/notebooks/deck.gl) ;)
+### Interactive [DeckGL Heatmap 🗺️ Demo Notebook 📓](https://github.com/RandomFractals/js-notebook-inspector/tree/master/notebooks/deck.gl)
 
 ![Interactive Deck.GL Heatmap 🗺️ Demo Notebook 📓](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-deckgl-heatmap.png?raw=true 
  "Interactive Deck.GL Heatmap 🗺️ Demo Notebook 📓 View")
+
+### [D3.js Gallery Notebooks 📚](https://github.com/RandomFractals/js-notebook-inspector/tree/master/notebooks/d3)
+
+![d3.js Gallery Notebooks 📚](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-d3-gallery.png?raw=true 
+ "d3.js Gallery Notebooks 📚")
 
 # Planned Beta Features
 
