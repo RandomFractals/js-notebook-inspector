@@ -23,6 +23,8 @@ export class Notebook extends TreeItem {
     public source: string = '',
     public document: any = undefined) {
     super(fileName, TreeItemCollapsibleState.Collapsed);
+    // set notebook tree item tooltip
+    this.tooltip = `${this.authorName}/${this.fileName}`;
   }
 
   /**
@@ -42,21 +44,6 @@ export class Notebook extends TreeItem {
       jsModule = new Function(`${this.source.slice(0, -26)} return notebook;`)();
     }
     return jsModule;
-  }
-
-  /**
-   * Gets notebook file tooltip.
-   */
-  get tooltip(): string {
-    return `${this.authorName}/${this.fileName}`;
-  }
-
-  /**
-   * Gets notebook description.
-   */
-  get description(): string {
-    // TODO: change this to show notebook title, etc. later
-    return this.url;
   }
 
   /**
