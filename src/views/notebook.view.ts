@@ -92,7 +92,7 @@ export class NotebookView {
    * Creates new notebook view.
    * @param viewType webview type, i.e. notebook.view.
    * @param extensionPath Extension path for loading webview scripts, etc.
-   * @param uri data source uri.
+   * @param uri notebook source uri.
    * @param viewColumn vscode IDE view column to display this view in.
    * @param template Webview html template reference.
    * @param panel Optional webview panel reference for restore on vscode IDE reload.
@@ -309,15 +309,15 @@ export class NotebookView {
       this._logger.debug(`loadView(): loading view... \n ${viewName}`, url);
       //fileUri.toString(true)); // skip encoding
       if (url.startsWith("http://") || url.startsWith("https://")) {
-        // launch requested remote data view command
+        // launch requested remote notebook view command
         this._logger.debug(`loadView():executeCommand: \n ${viewName}`, url);
         commands.executeCommand(viewName, fileUri);
       } else if (fs.existsSync(fileUri.fsPath)) {
-        // launch requested local data view command
+        // launch requested local notebook view command
         this._logger.debug(`loadView():executeCommand: \n ${viewName}`, fileUri.fsPath);
         commands.executeCommand(viewName, fileUri);
       } else {
-        // try to find requested data file(s) in open workspace
+        // try to find requested notebook file(s) in open workspace
         workspace.findFiles(`**/${url}`).then((files) => {
           if (files.length > 0) {
             // pick the 1st matching file from the workspace
@@ -358,7 +358,7 @@ export class NotebookView {
           this.refreshView(this._notebook); // .module
         });
     } else if (dataEncoding === 'utf8') {
-      // open local text document
+      // open local notebook document
       workspace.openTextDocument(this.uri).then((document) => {
         this._logger.debug('refresh(): file:', this._fileName);
         this._content = document.getText();
