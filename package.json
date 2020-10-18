@@ -104,7 +104,7 @@
         "category": "JS Notebook",
         "icon": {
           "light": "./images/refresh.svg",
-          "dark": "./images/refersh.svg"
+          "dark": "./images/refresh.svg"
         }
       }
     ],
