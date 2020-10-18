@@ -102,8 +102,7 @@
     <div id="toolbar" width="100%">
       <div id="toolbar-right">
         <select id="save-file-type-selector" 
-          title="Save Notebook"
-          onChange="saveNotebook()">
+          title="Save Notebook">
           <option value="">📥&nbsp;Save</option>
           <!--
           <option value=".nb.json" title="Notebook Config">⚙️&nbsp;config</option>
@@ -112,29 +111,19 @@
           <option value=".nb.json" title="Notebook JSON">{} &nbsp;json</option>
           <option value=".html" title="Notebook Html">&lt;&gt;html</option>
         </select>
-        <a id="help-button" title="Notebook View Help" href="#"
-          style="color: orange;"
-          onClick="showHelp()">?</a>
-        <a id="buy-coffee-button" title="Buy Coffee"  href="#"
-          style="color: orangered; font-weight: bold"
-          onClick="buyCoffee()">☕️</a>
+        <a id="help-button" title="Notebook View Help" href="#" 
+          style="color: orange;">?</a>
+        <a id="buy-coffee-button" title="Buy Coffee"  href="#" 
+          style="color: orangered; font-weight: bold">☕️</a>
       </div>
       <div id="toolbar-left">
-        <a id="favorite-notebook-button" title="Favorite"
-          href="#" class="label"
-          onClick="toggleFavorite('{notebookUrl}')">⭐</a>
-        <a id="title" title="View Notebook Source" 
-          href="#"
-          onClick="viewNotebookSource('{notebookUrl}')">
+        <a id="favorite-notebook-button" title="Favorite" href="#" class="label">⭐</a>
+        <a id="title" title="View Notebook Source" href="#">
           <span class="label">📓</span>
           {notebookName}
         </a>
-        <a id="author-button" title="View {notebookAuthor} Notebooks" 
-        href="#" class="label"
-        onClick="viewNotebookSource('https://observablehq.com/{notebookAuthor}')">👨</a>
-      <a id="collections-button" title="View {notebookAuthor} Notebook Collections" 
-        href="#" class="label"
-        onClick="viewNotebookSource('https://observablehq.com/{notebookAuthor}?tab=collections')">📚</a>        
+        <a id="author-button" title="View {notebookAuthor} Notebooks" href="#" class="label">👨</a>
+      <a id="collections-button" title="View {notebookAuthor} Notebook Collections" href="#" class="label">📚</a>        
         <!-- |
         <a title="Undo" href="#" onclick="undoConfig()"> ↩ </a>
         <a title="Redo" href="#" onclick="redoConfig()"> ↪ </a>
@@ -144,15 +133,13 @@
           style="color: orange;"
           onclick="reloadNotebook()">🔃</a>
         -->
-        <input id="notebook-url-input" type="text" 
-          title="Enter new Notebook URL"
-          onKeyPress="loadNotebookViewFromUrl()" />
+        <input id="notebook-url-input" type="text" />
       </div>
     </div>    
     <div id="message"></div>
     <div id="notebook-view"></div>
     <!-- notebook view init script -->
-    <script type="text/javascript">
+    <script async type="module">
     let vscode, 
         title,
         message, 
@@ -191,10 +178,22 @@
       document.addEventListener('DOMContentLoaded', event => {
         // initialize notebook view page elements
         title = document.getElementById('title');
+        title.onclick = viewNotebookSource;
         message = document.getElementById('message');
         favoriteNotebookButton = document.getElementById('favorite-notebook-button');
+        favoriteNotebookButton.onclick = toggleFavorite;
         notebookUrlInput = document.getElementById('notebook-url-input');
+        notebookUrlInput.onkeypress = loadNotebookViewFromUrl;
         saveFileTypeSelector = document.getElementById('save-file-type-selector');
+        saveFileTypeSelector.onchange = saveNotebook;
+
+        // wire notebook view toolbar link clicks
+        document.getElementById('author-button').onclick = viewAuthorNotebooks;
+        document.getElementById('collections-button').onclick = viewAuthorCollections;
+        document.getElementById('help-button').onclick = showHelp;
+        document.getElementById('buy-coffee-button').onclick = buyCoffee;
+
+        // save main notebook view node
         notebookView = document.getElementById('notebook-view');
         try {
           // notify webview
@@ -250,7 +249,7 @@
       }
       
       // toggle favorite notebook setting
-      function toggleFavorite(notebookUrl) {
+      function toggleFavorite() {
         vscode.postMessage({
           command: 'toggleFavorite',
           uri: notebookUrl
@@ -258,11 +257,27 @@
       }
 
       // view notebook source
-      function viewNotebookSource(notebookUrl) {
+      function viewNotebookSource() {
         vscode.postMessage({
           command: 'loadView',
           viewName: 'vscode.open',
           uri: notebookUrl
+        });
+      }
+
+      function viewAuthorNotebooks() {
+        vscode.postMessage({
+          command: 'loadView',
+          viewName: 'vscode.open',
+          uri: 'https://observablehq.com/{notebookAuthor}'
+        });
+      }
+
+      function viewAuthorCollections() {
+        vscode.postMessage({
+          command: 'loadView',
+          viewName: 'vscode.open',
+          uri: 'https://observablehq.com/{notebookAuthor}?tab=collections'
         });
       }
 
