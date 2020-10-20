@@ -135,11 +135,13 @@
         -->
         <input id="notebook-url-input" type="text" />
       </div>
-    </div>    
+    </div>
     <div id="message"></div>
     <div id="notebook-view"></div>
     <!-- notebook view init script -->
     <script async type="module">
+    import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+    import {Compiler} from "https://unpkg.com/@alex.garcia/unofficial-observablehq-compiler@0.5.0/dist/index-esm.js";
     let vscode, 
         title,
         message, 
@@ -151,6 +153,8 @@
         notebookFileName, 
         notebookUrl = '{notebookUrl}',
         notebookView;
+    const notebookCompiler = new Compiler();
+    const notebookRuntime = new Runtime();
 
       // initialize vs code api for messaging
       vscode = acquireVsCodeApi();
@@ -236,10 +240,13 @@
       }
 
       function loadNotebook(notebook) {
-        // clearNotebookView();
         console.log(`loading ${notebook.url} ...`);
         // console.log(JSON.stringify(notebook.document.nodes));
         // TODO: reload notebook view with cell code toggles here
+        clearNotebookView();
+        notebookCompiler.notebook(notebook.document).then(define => {
+          const notebookModule = notebookRuntime.module(define, Inspector.into(notebookView));
+        });
       }
 
       function clearNotebookView() {
