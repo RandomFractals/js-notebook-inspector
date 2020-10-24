@@ -4,6 +4,10 @@ import {
 } from 'vscode';
 import * as path from 'path';
 
+const MD_CELL: string = 'md`';
+const MD_CODE: string = '```';
+const NEW_LINE: string = '\n';
+
 /**
  * Notebook info type.
  */
@@ -44,6 +48,54 @@ export class Notebook extends TreeItem {
       jsModule = new Function(`${this.source.slice(0, -26)} return notebook;`)();
     }
     return jsModule;
+  }
+
+  /**
+   * Gets notebook js code string.
+   */
+  public get code(): string {
+    return this.document.nodes.map((node: any) => node.value).join('\n\n');
+  }
+
+  /**
+   * Gets notebook markdown text.
+   */
+  public get markdown(): string {
+    const markdownLines: string[] = [];
+    let inJS: boolean = false;
+
+    // crete markdown text lines
+    this.document.nodes.forEach((node:any) => {
+      const cell: string = node.value.trim();
+      if (cell.substring(0, 3) === MD_CELL) {
+        if (inJS) {
+          // start markdown code demarcation
+          markdownLines.push(MD_CODE);
+          inJS = false;
+        }
+        else {
+          markdownLines.push('');
+        }
+        markdownLines.push(cell.substring(3, cell.length -1) + '');
+      }
+      else {
+        if (!inJS) {
+          // close markdown code demarcation
+          markdownLines.push(MD_CODE);
+          inJS = true;
+        }
+        else {
+          markdownLines.push('');
+        }
+        markdownLines.push(node.value + '');
+      }
+    });
+
+    if (inJS) {
+      // close markdown code demarcation
+      markdownLines.push(MD_CODE);
+    }
+    return markdownLines.join(NEW_LINE);
   }
 
   /**
