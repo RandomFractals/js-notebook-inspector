@@ -425,6 +425,9 @@ export class NotebookView {
         case '.js':
           this.saveFile(notebookFileUri, this._content);
           break;
+        case '.ojs':
+          this.saveFile(notebookFileUri, this._notebook.document.nodes.map(node => node.value).join('\n\n'));
+          break;
         case '.nb.json':
           this.saveFile(notebookFileUri, JSON.stringify(this._notebook.document, null, 2));
           break;

@@ -1,0 +1,3 @@
+hello = md`# Hello ${name}`
+
+name = 'world'
