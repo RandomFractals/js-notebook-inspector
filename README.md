@@ -22,9 +22,10 @@ Illustration notebook with Inspect input and parameter to visualize another note
 
 - 🕵️ Interactive Preview of JS Notebook 📓
 - 📚 Tree View ⚼ panel with Starred/Favorite ⭐ Notebooks 📓
-- 📥 Notebook 📓 `html`/`js` [runtime](https://github.com/observablehq/runtime) webpage 📰
-for adding to web sites || viewing locally in a browser 🌐
-- 💾 Save Notebook 📓 as `.js` [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) || [`.nb.json {}`](https://github.com/RandomFractals/js-notebook-inspector/blob/master/notebooks/intro/hello-world.nb.json) document w/Author 👨 info & Nodes ⎇ w/Code Cells ⌗:
+- 📥 Save Notebook 📓 as:
+  * `html`/`js` [runtime](https://github.com/observablehq/runtime) webpage 📰 for adding to web sites || viewing locally in a browser 🌐
+  * `.ojs` || `.omd` for local JS || markdown notebook 📓 editing & preview with [Observable JS](https://marketplace.visualstudio.com/items?itemName=GordonSmith.observable-js) vscode extension
+  * `.js` [ES JS module](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/) || [`.nb.json {}`](https://github.com/RandomFractals/js-notebook-inspector/blob/master/notebooks/intro/hello-world.nb.json) document w/Author 👨 info & Nodes ⎇ w/Code Cells ⌗:
 
 ### Notebook 📓 JSON View
 
