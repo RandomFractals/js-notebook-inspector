@@ -11,6 +11,10 @@
 
 [VSCode](https://code.visualstudio.com/) extension for Interactive Preview of [Observable](https://observablehq.com/explore) JS Notebooks 📚 & Notebook 📓 Nodes ⎇ & Cells ⌗ source code.
 
+#### Example: [Observable Notebook 📓 Inspector 🕵️](https://observablehq.com/@randomfractals/notebook-info)
+
+Illustration notebook with Inspect input and parameter to visualize another notebook 📓 cell ⌗ dependencies graph ⎇ ;)
+
 ![Notebook 📓 Inspector 🕵️](https://github.com/RandomFractals/js-notebook-inspector/blob/master/images/js-notebook-inspector.png?raw=true 
  "JS Notebook 📓 Inspector 🕵️")
 
