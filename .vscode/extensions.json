@@ -2,7 +2,8 @@
 	// See http://go.microsoft.com/fwlink/?LinkId=827846
 	// for the documentation about the extensions.json format
 	"recommendations": [
-		"RandomFractalsInc.vscode-data-preview",
-		"GordonSmith.observable-js"
+		"RandomFractalsInc.js-notebook-inspector",
+		"GordonSmith.observable-js",
+		"RandomFractalsInc.vscode-data-preview"
 	]
 }
