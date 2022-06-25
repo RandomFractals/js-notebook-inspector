@@ -153,7 +153,7 @@
     "@observablehq/inspector": "^3.2.1",
     "@observablehq/parser": "^4.2.0",
     "@observablehq/runtime": "^4.8.0",
-    "node-fetch": "2.6.1",
+    "node-fetch": "2.6.7",
     "superagent": "^6.1.0"
   }
 }
